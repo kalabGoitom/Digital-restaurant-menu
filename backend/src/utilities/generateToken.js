@@ -1,4 +1,3 @@
-import { genSalt } from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const generateToken = (id, res) => {
@@ -7,7 +6,7 @@ const generateToken = (id, res) => {
       id: id,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "1h" },
+    { expiresIn: "7h" },
   );
 
   res.cookie("jwt", token, {
