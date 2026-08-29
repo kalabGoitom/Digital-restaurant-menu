@@ -20,6 +20,14 @@ const authMiddleware = async (req, res, next) => {
     });
 
     if (!user) return res.status(404).json({ msg: "user not found" });
+
+    if (!user.emailVerified) {
+      return res.status(403).json({
+        message:
+          "Please verify your email before accessing the admin dashboard.",
+      });
+    }
+
     req.user = user;
 
     next();

@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useAuth } from "../context/useAuth";
 import { signup } from "../services/authApi";
 import "./Admin.css";
 
 function AdminSignup() {
-  const { signIn } = useAuth();
-  const [values, setValues] = useState({ name: "", email: "", password: "" });
+  const [values, setValues] = useState({ name: "", email: "", password: "", inviteCode: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,8 +12,8 @@ function AdminSignup() {
     setLoading(true);
     setError("");
     try {
-      signIn(await signup(values));
-      window.location.assign("/admin/dashboard");
+      const admin = await signup(values);
+      window.location.assign(`/admin/verify-email?email=${encodeURIComponent(admin.email)}`);
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -33,7 +31,9 @@ function AdminSignup() {
     <label>Email<input type="email" value={values.email} onChange={(event) => setValues({ ...values, email: event.target.value })} required /></label>
     <label>Password<input type="password" value={values.password} onChange={(event) => setValues({ ...values, password: event.target.value })} required minLength="6" /></label>
     <p className="password-hint">Use at least 6 characters, including a letter and number.</p>
+    <label>Invitation code<input type="password" value={values.inviteCode} onChange={(event) => setValues({ ...values, inviteCode: event.target.value })} required autoComplete="off" /></label>
     <button className="primary-button" disabled={loading}>{loading ? "Creating account…" : "Create admin account"}</button>
+    <p className="auth-switch">Already have an account? <a href="/admin/login">Sign in</a></p>
   </form></div>;
 }
 
