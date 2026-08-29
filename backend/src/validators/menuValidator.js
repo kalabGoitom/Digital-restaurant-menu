@@ -11,13 +11,9 @@ const menuSchema = z.object({
     .min(5, "Description must be at least 5 characters")
     .max(500, "Description is too long"),
 
-  price: z.coerce
-    .number()
-    .positive("Price must be greater than 0"),
+  price: z.coerce.number().positive("Price must be greater than 0"),
 
-  imageUrl: z
-    .string()
-    .url("Please provide a valid image URL"),
+  imageUrl: z.string().url("Please provide a valid image URL"),
 
   category: z
     .string()
@@ -29,4 +25,8 @@ const updateMenuSchema = menuSchema.partial().extend({
   available: z.boolean().optional(),
 });
 
-export { menuSchema, updateMenuSchema };
+const dailyMenuItemSchema = z.object({
+  menuId: z.string().uuid("Invalid menu ID"),
+});
+
+export { menuSchema, updateMenuSchema, dailyMenuItemSchema };

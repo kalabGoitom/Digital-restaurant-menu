@@ -53,7 +53,7 @@ const deleteMenu = async (req, res) => {
     const { id } = req.params;
     const menuItemExists = await prisma.menu.findUnique({ where: { id: id } });
     if (!menuItemExists) {
-      res.status(404).json({ message: "Menu item not found." });
+      return res.status(404).json({ message: "Menu item not found." });
     }
     const menuItem = await prisma.menu.delete({ where: { id: id } });
     res.status(200).json({ message: "Menu item deleted." });

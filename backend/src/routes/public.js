@@ -1,8 +1,8 @@
 import express from "express";
-import getMenus from "../controllers/public.js";
+import getTodaysMenu from "../controllers/todayMenu.js";
 
 const router = express.Router();
 
-router.get("/", getMenus);
+router.get("/today", getTodaysMenu);
 
 export default router;

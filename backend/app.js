@@ -13,7 +13,7 @@ app.use(cookieParser());
 
 app.use("/api/admin", authRouters);
 app.use("/api/admin", adminRoutes);
-app.use("/api/menu/menu-items", publicRouters);
+app.use("/api/menu", publicRouters);
 
 const port = process.env.PORT || 5000;
 

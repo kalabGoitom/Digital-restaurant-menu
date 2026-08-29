@@ -4,19 +4,41 @@ import {
   getAllMenu,
   editMenu,
   deleteMenu,
-} from "../controllers/admin.js";
+} from "../controllers/menu.js";
+
+import {
+  createDailyMenu,
+  addToDailyMenuItem,
+  removeFromDailyMenu,
+} from "../controllers/dailyMenu.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
-import { menuSchema, updateMenuSchema } from "../validators/menuValidator.js";
+
+import {
+  menuSchema,
+  updateMenuSchema,
+  dailyMenuItemSchema,
+} from "../validators/menuValidator.js";
+
 import validateRequest from "../middlewares/validateRequest.js";
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-router.get("/menu-items",getAllMenu);
-router.post("/menu-items", validateRequest(menuSchema), createMenu)
-router.patch("/menu-items/:id", validateRequest(updateMenuSchema), editMenu)
-router.delete("/menu-items/:id",deleteMenu);
+// Menu routes
+router.get("/menu-items", getAllMenu);
+router.post("/menu-items", validateRequest(menuSchema), createMenu);
+router.patch("/menu-items/:id", validateRequest(updateMenuSchema), editMenu);
+router.delete("/menu-items/:id", deleteMenu);
 
+// daily menu routes
+
+router.post("/daily-menu", createDailyMenu);
+router.post(
+  "/daily-menu/items",
+  validateRequest(dailyMenuItemSchema),
+  addToDailyMenuItem,
+);
+router.delete("/daily-menu/items/:id", removeFromDailyMenu);
 
 export default router;
