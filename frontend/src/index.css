@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+:root { color: #1c2824; background: #fcfaf5; font-family: "DM Sans", Arial, sans-serif; font-synthesis: none; }
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body { margin: 0; min-width: 320px; }
+button, input { font: inherit; }
+
+#today-menu {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6rem 2rem 7rem;
+}
+
+.section-heading { margin: 0 auto 2.5rem; max-width: 650px;
+  text-align: center;
+}
+.eyebrow { color: #a6651f; font-size: .75rem; font-weight: 700; letter-spacing: .16em; margin: 0 0 .85rem; text-transform: uppercase; }
+.section-heading h1 { font-family: "Playfair Display", Georgia, serif; font-size: clamp(2.3rem, 4vw, 3.8rem); line-height: 1; margin: 0; }
+.section-heading > p:last-child { color: #66736d; line-height: 1.7; margin: 1rem auto 0; }
+.menu-toolbar { align-items: center; border-bottom: 1px solid #ddd9cf; display: flex; gap: 1rem; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; }
+.menu-count { color: #66736d; font-size: .9rem; margin: 0; white-space: nowrap; }
+.category-filters { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .15rem; }
+.category-filters button { background: transparent; border: 1px solid #d7d3c9; border-radius: 999px; color: #4d5d56; cursor: pointer; font-size: .82rem; padding: .5rem .8rem; white-space: nowrap; }
+.category-filters button:hover, .category-filters .is-active { background: #1d3a34; border-color: #1d3a34; color: #fff; }
+@media (max-width: 600px) { #today-menu { padding: 4rem 1.25rem 5rem; } .menu-toolbar { align-items: flex-start; flex-direction: column; } .category-filters { max-width: 100%; width: 100%; } }

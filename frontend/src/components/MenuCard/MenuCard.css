@@ -1,0 +1,79 @@
+.menu-card {
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e4dfd5;
+  border-radius: 3px;
+  box-shadow: 0 10px 24px rgba(22, 39, 31, .06);
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+.menu-card:hover { box-shadow: 0 16px 32px rgba(22, 39, 31, .12); transform: translateY(-4px); }
+
+.menu-card-image-container {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.menu-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.menu-card-image-fallback { align-items: center; background: linear-gradient(135deg, #dca44d, #33564c); color: white; display: flex; font-size: 1.2rem; font-weight: 800; height: 100%; justify-content: center; letter-spacing: .2em; }
+
+.menu-card-unavailable {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  padding: 0.4rem 0.7rem;
+
+  background: black;
+  color: white;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.menu-card-content {
+  padding: 1.25rem;
+}
+
+.menu-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.menu-card-header h2 {
+  margin: 0;
+
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.menu-card-price {
+  white-space: nowrap;
+  color: #a6651f;
+  font-weight: 700;
+}
+
+.menu-card-category {
+  margin: 0.5rem 0;
+
+  color: #a6651f;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.menu-card-description {
+  color: #66736d;
+  margin: 0;
+
+  line-height: 1.6;
+}

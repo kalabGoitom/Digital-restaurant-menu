@@ -1,0 +1,18 @@
+.empty-menu {
+  padding: 4rem 2rem;
+  text-align: center;
+  background: #f3eee2;
+  border: 1px dashed #cdbf9f;
+  border-radius: 3px;
+}
+
+.empty-menu h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+}
+
+.empty-menu p {
+  color: #66736d;
+  margin: 0;
+  line-height: 1.6;
+}

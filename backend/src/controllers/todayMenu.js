@@ -32,7 +32,12 @@ const getTodaysMenu = async (req, res) => {
 
     return res.status(200).json({
       date: dailyMenu.date,
-      menuItems: dailyMenu.items.map((item) => item.menu),
+      // Preserve the relationship ID so an admin can remove a dish from the
+      // daily menu without deleting the reusable menu item itself.
+      menuItems: dailyMenu.items.map((item) => ({
+        ...item.menu,
+        dailyMenuItemId: item.id,
+      })),
     });
   } catch (error) {
     return res.status(500).json({

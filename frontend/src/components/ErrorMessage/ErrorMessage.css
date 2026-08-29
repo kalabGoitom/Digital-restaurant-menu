@@ -1,0 +1,41 @@
+.error-message {
+  background: #fbf0ed;
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+
+  text-align: center;
+}
+
+.error-message h2 {
+  margin: 0 0 0.75rem;
+}
+
+.error-message p {
+  max-width: 500px;
+  margin: 0 0 1.5rem;
+
+  line-height: 1.6;
+}
+
+.error-message button {
+  padding: 0.75rem 1.5rem;
+
+  border: none;
+  border-radius: 2px;
+
+  background: #1d3a34;
+  color: white;
+
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.error-message button:hover {
+  opacity: 0.8;
+}

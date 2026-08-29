@@ -1,0 +1,81 @@
+.hero {
+  min-height: 74vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 4rem 1.5rem;
+
+  background-image:
+    linear-gradient(rgba(11, 30, 25, 0.82), rgba(11, 30, 25, 0.53)),
+    url("https://images.unsplash.com/photo-1547592180-85f173990554");
+
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-content {
+  max-width: 700px;
+  color: #fffaf0;
+}
+
+.hero-subtitle {
+  margin-bottom: 1rem;
+
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  color: #f2c36e;
+  font-weight: 700;
+}
+
+.hero h1 {
+  margin: 0 0 1.5rem;
+
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2.7rem, 6vw, 5.5rem);
+  line-height: 1.1;
+}
+
+.hero-description {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.hero-button {
+  display: inline-block;
+
+  padding: 0.9rem 1.8rem;
+
+  background: #e8b34f;
+  color: #192a25;
+
+  text-decoration: none;
+
+  border-radius: 2px;
+
+  font-weight: 600;
+
+  transition: transform 0.2s ease;
+}
+
+.hero-button:hover {
+  background: #f6c968;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 65vh;
+    padding: 3rem 1.2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+}
