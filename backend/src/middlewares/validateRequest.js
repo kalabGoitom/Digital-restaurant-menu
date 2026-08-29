@@ -6,7 +6,7 @@ const validateRequest = (schema) => {
       const errorMessages = result.error.issues.map((err) => err.message);
       const error = errorMessages.join(", ");
       return res.status(400).json({
-        msg: error,
+        message: error,
       });
     }
 
