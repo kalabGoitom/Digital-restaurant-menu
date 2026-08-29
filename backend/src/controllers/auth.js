@@ -1,20 +1,10 @@
 import { prisma } from "../config/db.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utilities/generateToken.js";
-import { loginSchema, signupSchema } from "../validators/authValidator.js";
 
 const signup = async (req, res) => {
   try {
-    const result = signupSchema.safeParse(req.body);
-
-    if (!result.success) {
-      return res.status(400).json({
-        message: "Validation failed",
-        errors: result.error.flatten().fieldErrors,
-      });
-    }
-
-    const { name, email, password } = result.data;
+  const { name, email, password } = req.body;
 
     const userExists = await prisma.admin.findUnique({
       where: {
@@ -24,7 +14,7 @@ const signup = async (req, res) => {
 
     if (userExists)
       return res.status(400).json({
-        msg: `User with ${email} already exists.`,
+        message: `User with ${email} already exists.`,
       });
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -42,7 +32,7 @@ const signup = async (req, res) => {
 
     res.status(200).json({
       token: token,
-      msg: {
+      message: {
         id: user.id,
         name: user.name,
         email: user.email,
@@ -52,23 +42,14 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      msg: error.message,
+      message: error.message,
     });
   }
 };
 
 const login = async (req, res) => {
   try {
-    const result = loginSchema.safeParse(req.body);
-
-    if (!result.success) {
-      return res.status(400).json({
-        message: "Validation failed",
-        errors: result.error.flatten().fieldErrors,
-      });
-    }
-
-    const { email, password } = result.data;
+    const { email, password } = req.body;
 
     const user = await prisma.admin.findUnique({
       where: {
@@ -78,20 +59,20 @@ const login = async (req, res) => {
 
     if (!user)
       return res.status(404).json({
-        msg: `user with ${email} doesn't exist.`,
+        message: `user with ${email} doesn't exist.`,
       });
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch)
       return res.status(401).json({
-        msg: "Invalid credentials",
+        message: "Invalid credentials",
       });
 
     const token = generateToken(user.id, res);
 
     res.status(200).json({
-      msg: {
+      message: {
         id: user.id,
         name: user.name,
         email: user.email,
@@ -101,7 +82,7 @@ const login = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      msg: error.message,
+      message: error.message,
     });
   }
 };
