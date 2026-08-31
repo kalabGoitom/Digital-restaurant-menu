@@ -1,6 +1,6 @@
 import { getTodaysMenu } from "./menuApi";
 
-const API_URL = `${import.meta.env.VITE_API_URL}/api/admin/daily-menu`;
+const API_URL = `${import.meta.env.VITE_API_URL}/admin/daily-menu`;
 async function request(url, options = {}) {
   const response = await fetch(url, { credentials: "include", ...options });
   const data = await response.json();

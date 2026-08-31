@@ -1,4 +1,4 @@
-const API_URL = `${import.meta.env.VITE_API_URL}/api/admin/menu-items`;
+const API_URL = `${import.meta.env.VITE_API_URL}/admin/menu-items`;
 
 async function request(url, options = {}) {
   const response = await fetch(url, { credentials: "include", ...options });
