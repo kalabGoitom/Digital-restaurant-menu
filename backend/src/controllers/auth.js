@@ -49,8 +49,6 @@ const signup = async (req, res) => {
 
     const verificationCodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
-    await sendVerificationEmail(email, verificationCode);
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.admin.create({
@@ -64,6 +62,8 @@ const signup = async (req, res) => {
         verificationCodeExpiry,
       },
     });
+
+    await sendVerificationEmail(email, verificationCode);
 
     res.status(200).json({
       message: {

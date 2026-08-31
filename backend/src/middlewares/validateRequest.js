@@ -10,6 +10,7 @@ const validateRequest = (schema) => {
       });
     }
 
+    req.body = result.data;
     next();
   };
 };

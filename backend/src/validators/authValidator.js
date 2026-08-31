@@ -11,6 +11,8 @@ const signupSchema = z.object({
       /^(?=.*[A-Za-z])(?=.*\d).+$/,
       "Password must contain at least one letter and one number",
     ),
+
+  inviteCode: z.string().min(1, "Invite code is required"),
 });
 
 const loginSchema = z.object({

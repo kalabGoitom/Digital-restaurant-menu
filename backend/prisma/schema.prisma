@@ -52,8 +52,8 @@ model DailyMenuItem {
  dailyMenuId String
   menuId      String
 
-  dailyMenu   DailyMenu @relation(fields: [dailyMenuId], references: [id])
-  menu        Menu      @relation(fields: [menuId], references: [id])
+  dailyMenu   DailyMenu @relation(fields: [dailyMenuId], references: [id], onDelete: Cascade)
+  menu        Menu      @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
   @@unique([dailyMenuId, menuId])
  

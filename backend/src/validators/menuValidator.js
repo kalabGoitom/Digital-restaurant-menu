@@ -3,11 +3,13 @@ import { z } from "zod";
 const menuSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(2, "Name must be at least 2 characters")
     .max(100, "Name is too long"),
 
   description: z
     .string()
+    .trim()
     .min(5, "Description must be at least 5 characters")
     .max(500, "Description is too long"),
 
@@ -17,6 +19,7 @@ const menuSchema = z.object({
 
   category: z
     .string()
+    .trim()
     .min(2, "Category must be at least 2 characters")
     .max(50, "Category is too long"),
 });
