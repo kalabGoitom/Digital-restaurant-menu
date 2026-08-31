@@ -6,6 +6,7 @@ import adminRoutes from "./src/routes/admin.js";
 import publicRouters from "./src/routes/public.js";
 import { connectDB, disconnectDB } from "./src/config/db.js";
 import cookieParser from "cookie-parser";
+import notFound from "./src/middlewares/notFound.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(
 app.use("/api/admin", authRouters);
 app.use("/api/admin", adminRoutes);
 app.use("/api/menu", publicRouters);
+app.use(notFound);
 
 const port = process.env.PORT || 5000;
 

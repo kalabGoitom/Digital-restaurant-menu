@@ -1,7 +1,126 @@
-.admin-shell { background: #f6f5f0; color: #21302b; display: grid; grid-template-columns: 245px 1fr; min-height: 100vh; }
-.admin-sidebar { background: #173a33; color: #eaf1ea; display: flex; flex-direction: column; padding: 2rem 1.25rem; }
-.admin-logo { color: #f4bd52; font-size: 1.2rem; font-weight: 800; letter-spacing: .16em; padding: 0 .75rem 2.75rem; text-decoration: none; }.admin-logo span { color: #b7c9c0; font-size: .55rem; letter-spacing: .1em; }
-.admin-sidebar nav { display: grid; gap: .35rem; }.admin-sidebar nav a { border-radius: 4px; color: #d2dfd7; font-size: .91rem; padding: .8rem; text-decoration: none; }.admin-sidebar nav a:hover { background: rgba(255,255,255,.1); color: #fff; }
-.admin-profile { align-items: center; border-top: 1px solid rgba(255,255,255,.13); display: flex; gap: .7rem; margin-top: auto; padding: 1.5rem .75rem 0; }.admin-profile > span { align-items: center; background: #e6b24e; border-radius: 50%; color: #173a33; display: flex; font-weight: 800; height: 34px; justify-content: center; width: 34px; }.admin-profile strong { display: block; font-size: .82rem; }.admin-profile button { background: none; border: 0; color: #abc0b6; cursor: pointer; font-size: .74rem; padding: .2rem 0; }
-.admin-main { padding: 3rem clamp(1.25rem, 4vw, 4.5rem); }.admin-page-header { margin: 0 auto 2.5rem; max-width: 1200px; }.admin-page-header p { color: #a6651f; font-size: .73rem; font-weight: 700; letter-spacing: .14em; margin: 0 0 .55rem; text-transform: uppercase; }.admin-page-header h1 { font-family: "Playfair Display", Georgia, serif; font-size: clamp(2rem, 4vw, 3rem); margin: 0; }.admin-page-header span { color: #68766f; display: block; margin-top: .65rem; }
-@media (max-width: 760px) { .admin-shell { display: block; }.admin-sidebar { gap: 1rem; padding: 1.25rem; }.admin-logo { padding: 0; }.admin-sidebar nav { display: flex; gap: .25rem; overflow-x: auto; }.admin-sidebar nav a { white-space: nowrap; }.admin-profile { border: 0; margin: 0; padding: 0; }.admin-main { padding: 2rem 1.25rem; } }
+.admin-shell {
+  background: #f6f5f0;
+  color: #21302b;
+  display: grid;
+  grid-template-columns: 245px 1fr;
+  min-height: 100vh;
+}
+.admin-sidebar {
+  background: #173a33;
+  color: #eaf1ea;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.25rem;
+}
+.admin-logo {
+  color: #f4bd52;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  padding: 0 0.75rem 2.75rem;
+  text-decoration: none;
+}
+.admin-logo span {
+  color: #b7c9c0;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+}
+.admin-sidebar nav {
+  display: grid;
+  gap: 0.35rem;
+}
+.admin-sidebar nav a {
+  border-radius: 4px;
+  color: #d2dfd7;
+  font-size: 0.91rem;
+  padding: 0.8rem;
+  text-decoration: none;
+}
+.admin-sidebar nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.admin-profile {
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.13);
+  display: flex;
+  gap: 0.7rem;
+  margin-top: auto;
+  padding: 1.5rem 0.75rem 0;
+}
+.admin-profile > span {
+  align-items: center;
+  background: #e6b24e;
+  border-radius: 50%;
+  color: #173a33;
+  display: flex;
+  font-weight: 800;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+.admin-profile strong {
+  display: block;
+  font-size: 0.82rem;
+}
+.admin-profile button {
+  background: none;
+  border: 0;
+  color: #abc0b6;
+  cursor: pointer;
+  font-size: 0.74rem;
+  padding: 0.2rem 0;
+}
+.admin-main {
+  padding: 3rem clamp(1.25rem, 4vw, 4.5rem);
+}
+.admin-page-header {
+  margin: 0 auto 2.5rem;
+  max-width: 1200px;
+}
+.admin-page-header p {
+  color: #a6651f;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin: 0 0 0.55rem;
+  text-transform: uppercase;
+}
+.admin-page-header h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0;
+}
+.admin-page-header span {
+  color: #68766f;
+  display: block;
+  margin-top: 0.65rem;
+}
+@media (max-width: 760px) {
+  .admin-shell {
+    display: block;
+  }
+  .admin-sidebar {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  .admin-logo {
+    padding: 0;
+  }
+  .admin-sidebar nav {
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+  }
+  .admin-sidebar nav a {
+    white-space: nowrap;
+  }
+  .admin-profile {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .admin-main {
+    padding: 2rem 1.25rem;
+  }
+}

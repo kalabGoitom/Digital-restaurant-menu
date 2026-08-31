@@ -6,18 +6,23 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Home from "./pages/Home";
 import ManageDailyMenu from "./pages/ManageDailyMenu";
 import ManageMenu from "./pages/ManageMenu";
+import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   const path = window.location.pathname;
 
-  let page = <Home />;
-  if (path === "/admin/login") page = <AdminLogin />;
-  if (path === "/admin/signup") page = <AdminSignup />;
-  if (path === "/admin/verify-email") page = <VerifyEmail />;
-  if (path === "/admin/dashboard") page = <ProtectedRoute><AdminDashboard /></ProtectedRoute>;
-  if (path === "/admin/menu-items") page = <ProtectedRoute><ManageMenu /></ProtectedRoute>;
-  if (path === "/admin/today-menu") page = <ProtectedRoute><ManageDailyMenu /></ProtectedRoute>;
+  const routes = {
+    "/": <Home />,
+    "/admin/login": <AdminLogin />,
+    "/admin/signup": <AdminSignup />,
+    "/admin/verify-email": <VerifyEmail />,
+    "/admin/dashboard": <ProtectedRoute><AdminDashboard /></ProtectedRoute>,
+    "/admin/menu-items": <ProtectedRoute><ManageMenu /></ProtectedRoute>,
+    "/admin/today-menu": <ProtectedRoute><ManageDailyMenu /></ProtectedRoute>,
+  };
+
+  const page = routes[path] || <NotFound path={path} />;
 
   return <AuthProvider>{page}</AuthProvider>;
 }

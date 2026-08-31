@@ -18,7 +18,9 @@ function Home() {
     const loadInitialMenu = async () => {
       try {
         const data = await getTodaysMenu();
-        setMenuItems((data.menuItems || []).filter((menuItem) => menuItem.available));
+        setMenuItems(
+          (data.menuItems || []).filter((menuItem) => menuItem.available),
+        );
       } catch (requestError) {
         setError(requestError.message);
       } finally {
@@ -35,7 +37,9 @@ function Home() {
 
     try {
       const data = await getTodaysMenu();
-      setMenuItems((data.menuItems || []).filter((menuItem) => menuItem.available));
+      setMenuItems(
+        (data.menuItems || []).filter((menuItem) => menuItem.available),
+      );
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -62,8 +66,8 @@ function Home() {
             <p className="eyebrow">Fresh from our kitchen</p>
             <h1 id="today-menu-title">Today&apos;s menu</h1>
             <p>
-              Thoughtfully prepared Ethiopian dishes, ready to be shared at
-              your table.
+              Thoughtfully prepared Ethiopian dishes, ready to be shared at your
+              table.
             </p>
           </div>
 
@@ -77,9 +81,13 @@ function Home() {
             <>
               <div className="menu-toolbar">
                 <p className="menu-count">
-                  {visibleMenuItems.length} {visibleMenuItems.length === 1 ? "dish" : "dishes"}
+                  {visibleMenuItems.length}{" "}
+                  {visibleMenuItems.length === 1 ? "dish" : "dishes"}
                 </p>
-                <div className="category-filters" aria-label="Filter menu by category">
+                <div
+                  className="category-filters"
+                  aria-label="Filter menu by category"
+                >
                   {categories.map((category) => (
                     <button
                       className={activeCategory === category ? "is-active" : ""}
@@ -95,7 +103,9 @@ function Home() {
               {visibleMenuItems.length ? (
                 <MenuList menuItems={visibleMenuItems} />
               ) : (
-                <EmptyMenu message={`No ${activeCategory.toLowerCase()} dishes are available today.`} />
+                <EmptyMenu
+                  message={`No ${activeCategory.toLowerCase()} dishes are available today.`}
+                />
               )}
             </>
           )}
