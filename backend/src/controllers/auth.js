@@ -118,7 +118,6 @@ const login = async (req, res) => {
         email: user.email,
         createdAt: user.createdAt,
       },
-      token,
     });
   } catch (error) {
     res.status(500).json({
@@ -267,4 +266,39 @@ const resendVerificationCode = async (req, res) => {
   }
 };
 
-export { signup, login, verifyEmail, resendVerificationCode };
+const getCurrentAdmin = async (req, res) => {
+  try {
+    res.status(200).json({
+      admin: {
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        createdAt: req.user.createdAt,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const logout = (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+
+  return res.status(200).json({
+    message: "Logged out successfully.",
+  });
+};
+
+export {
+  signup,
+  login,
+  logout,
+  verifyEmail,
+  resendVerificationCode,
+  getCurrentAdmin,
+};
