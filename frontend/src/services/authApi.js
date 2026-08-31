@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 export async function login(credentials) {
   const response = await fetch(`${API_URL}/admin/login`, {
@@ -20,7 +20,8 @@ export async function signup(details) {
     body: JSON.stringify(details),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.message || "Unable to create the admin account.");
+  if (!response.ok)
+    throw new Error(data.message || "Unable to create the admin account.");
   return data.message;
 }
 
@@ -31,7 +32,8 @@ export async function verifyEmail(details) {
     body: JSON.stringify(details),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.message || "Unable to verify your email.");
+  if (!response.ok)
+    throw new Error(data.message || "Unable to verify your email.");
   return data;
 }
 
@@ -42,6 +44,7 @@ export async function resendVerificationCode(email) {
     body: JSON.stringify({ email }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.message || "Unable to send a new code.");
+  if (!response.ok)
+    throw new Error(data.message || "Unable to send a new code.");
   return data;
 }

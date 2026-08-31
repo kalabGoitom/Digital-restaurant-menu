@@ -35,7 +35,15 @@ const createDailyMenu = async (req, res) => {
       dailyMenu,
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    if (error.code === "P2002") {
+      return res.status(400).json({
+        message: "Today's daily menu already exists.",
+      });
+    }
+
+    return res.status(500).json({
+      message: "Failed to create today's daily menu.",
+    });
   }
 };
 

@@ -25,11 +25,11 @@ app.use("/api/menu", publicRouters);
 app.use(notFound);
 
 const port = process.env.PORT || 5000;
-
+let server;
 const start = async () => {
   try {
     await connectDB();
-    app.listen(port, () => {
+    server = app.listen(port, () => {
       console.log(`Server listening on port ${port}`);
     });
   } catch (error) {
@@ -37,29 +37,30 @@ const start = async () => {
     process.exit(1);
   }
 };
-
+const shutdown = async (signal) => {
+  console.log(`${signal} received, shutting down`);
+  if (server) {
+    server.close(async () => {
+      await disconnectDB();
+      process.exit(0);
+    });
+  } else {
+    await disconnectDB();
+    process.exit(0);
+  }
+};
 start();
-
-process.on("unhandledRejection", (err) => {
-  console.error("Unhandled Rejection", err);
-  app.close(async () => {
-    await disconnectDB();
-    process.exit(1);
-  });
+process.on("unhandledRejection", (error) => {
+  console.error("Unhandled Rejection:", error);
+  shutdown("unhandledRejection");
 });
-
-process.on("uncaughtRejection", (err) => {
-  console.error("Uncaught Rejection", err);
-  app.close(async () => {
-    await disconnectDB();
-    process.exit(1);
-  });
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+  shutdown("uncaughtException");
 });
-
-process.on("SIGTERM", (err) => {
-  console.error("SIGTERM received, shutting down");
-  app.close(async () => {
-    await disconnectDB();
-    process.exit(1);
-  });
+process.on("SIGTERM", () => {
+  shutdown("SIGTERM");
+});
+process.on("SIGINT", () => {
+  shutdown("SIGINT");
 });
