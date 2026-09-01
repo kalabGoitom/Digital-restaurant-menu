@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./authContext";
 
-const API_URL = "http://localhost:5000/api/admin";
+const API_URL = `${import.meta.env.VITE_API_URL}/admin"`;
 
 export function AuthProvider({ children }) {
   const [admin, setAdmin] = useState(null);
