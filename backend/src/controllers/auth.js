@@ -14,34 +14,90 @@ import {
   resendVerificationSchema,
 } from "../validators/authValidator.js";
 
+import { hashInvitationValue } from "../utilities/generateInvitation.js";
+
 const signup = async (req, res) => {
   try {
-    const { name, email, password, inviteCode } = req.body;
+    const { name, email, password, inviteCode, token } = req.body;
 
-    const adminExists = await prisma.admin.findFirst();
-
-    if (adminExists) {
-      return res.status(403).json({
-        message: "Admin account already exists.",
+    // verfiy with zod
+    if (!email) {
+      return res.status(400).json({
+        message: "Email is required.",
       });
     }
 
-    if (inviteCode !== process.env.ADMIN_INVITE_CODE) {
-      return res.status(403).json({
-        message: "Invalid invite code.",
+    if (!name || !password) {
+      return res.status(400).json({
+        message: "Name and password are required.",
       });
     }
 
-    const userExists = await prisma.admin.findUnique({
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const existingAdmin = await prisma.admin.findUnique({
       where: {
-        email: email,
+        email: normalizedEmail,
       },
     });
 
-    if (userExists)
+    if (existingAdmin) {
       return res.status(400).json({
-        message: `User with ${email} already exists.`,
+        message: "This email is already registered as a restaurant admin.",
       });
+    }
+
+    if (!token) {
+      return res.status(400).json({
+        message: "Invitation token is required.",
+      });
+    }
+
+    const tokenHash = hashInvitationValue(token);
+
+    const invitation = await prisma.restaurantInvitation.findUnique({
+      where: {
+        tokenHash,
+      },
+    });
+
+    if (!invitation) {
+      return res.status(404).json({
+        message: "Invalid invitation.",
+      });
+    }
+
+    if (invitation.status !== "PENDING") {
+      return res.status(400).json({
+        message: "This invitation is no longer valid.",
+      });
+    }
+
+    if (invitation.expiresAt < new Date()) {
+      return res.status(400).json({
+        message: "This invitation has expired.",
+      });
+    }
+
+    if (!inviteCode) {
+      return res.status(400).json({
+        message: "Invitation code is required.",
+      });
+    }
+
+    const codeHash = hashInvitationValue(inviteCode);
+
+    if (codeHash !== invitation.codeHash) {
+      return res.status(403).json({
+        message: "Invalid invitation code.",
+      });
+    }
+
+    if (invitation.invitedEmail.toLowerCase() !== normalizedEmail) {
+      return res.status(403).json({
+        message: "This invitation was issued for a different email address.",
+      });
+    }
 
     const verificationCode = generateVerificationCode();
 
@@ -51,27 +107,44 @@ const signup = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.admin.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role: "Admin",
-        emailVerified: false,
-        verificationCodeHash,
-        verificationCodeExpiry,
-      },
+    const result = await prisma.$transaction(async (tx) => {
+      const admin = await tx.admin.create({
+        data: {
+          name,
+          email: normalizedEmail,
+          password: hashedPassword,
+          role: "Admin",
+          emailVerified: false,
+          verificationCodeHash,
+          verificationCodeExpiry,
+          restaurantId: invitation.restaurantId,
+        },
+      });
+
+      await tx.restaurantInvitation.update({
+        where: {
+          id: invitation.id,
+        },
+        data: {
+          status: "ACCEPTED",
+          usedAt: new Date(),
+        },
+      });
+
+      return admin;
     });
 
-    await sendVerificationEmail(email, verificationCode);
+    await sendVerificationEmail(normalizedEmail, verificationCode);
 
-    res.status(200).json({
-      message: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        createdAt: user.createdAt,
+    res.status(201).json({
+      message: "Account created successfully. Please verify your email.",
+      admin: {
+        id: result.id,
+        name: result.name,
+        email: result.email,
+        role: result.role,
+        restaurantId: result.restaurantId,
+        createdAt: result.createdAt,
       },
     });
   } catch (error) {
@@ -84,39 +157,40 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const normalizedEmail = email.trim().toLowerCase();
 
-    const user = await prisma.admin.findUnique({
+    const admin = await prisma.admin.findUnique({
       where: {
-        email: email,
+        email: normalizedEmail,
       },
     });
 
-    if (!user)
+    if (!admin)
       return res.status(404).json({
-        message: `user with ${email} doesn't exist.`,
+        message: `Admin doesn't exist.`,
       });
 
-    if (!user.emailVerified) {
+    if (!admin.emailVerified) {
       return res.status(403).json({
         message: "Please verify your email before logging in.",
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, admin.password);
 
     if (!isMatch)
       return res.status(401).json({
         message: "Invalid credentials",
       });
 
-    const token = generateToken(user.id, res);
+    generateToken(admin.id, res, "restaurant_admin", admin.restaurantId);
 
     res.status(200).json({
       message: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: user.createdAt,
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
+        createdAt: admin.createdAt,
       },
     });
   } catch (error) {

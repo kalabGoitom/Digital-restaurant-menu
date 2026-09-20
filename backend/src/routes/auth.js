@@ -7,7 +7,10 @@ import {
   getCurrentAdmin,
   logout,
 } from "../controllers/auth.js";
-import { loginSchema, signupSchema } from "../validators/authValidator.js";
+import {
+  loginSchema,
+  restaurantSignupSchema,
+} from "../validators/authValidator.js";
 import validateRequest from "../middlewares/validateRequest.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 import {
@@ -18,7 +21,12 @@ import {
 } from "../middlewares/rateLimiter.js";
 const router = express.Router();
 
-router.post("/signup", signupLimiter, validateRequest(signupSchema), signup);
+router.post(
+  "/signup",
+  signupLimiter,
+  validateRequest(restaurantSignupSchema),
+  signup,
+);
 router.post("/login", loginLimiter, validateRequest(loginSchema), login);
 router.post("/logout", logout);
 router.post("/verify-email", verificationLimiter, verifyEmail);

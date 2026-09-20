@@ -1,15 +1,24 @@
 import jwt from "jsonwebtoken";
 
-const generateToken = (id, res) => {
+const generateToken = (
+  id,
+  res,
+  type = "restaurant_admin",
+  restaurantId = null,
+) => {
   const token = jwt.sign(
     {
-      id: id,
+      id,
+      type,
+      ...(restaurantId && { restaurantId }),
     },
     process.env.JWT_SECRET,
     { expiresIn: "7d" },
   );
 
-  res.cookie("jwt", token, {
+  const cookieName = type === "platform_admin" ? "platformToken" : "jwt";
+
+  res.cookie(cookieName, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",

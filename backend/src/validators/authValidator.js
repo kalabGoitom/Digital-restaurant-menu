@@ -1,18 +1,45 @@
 import { z } from "zod";
 
-const signupSchema = z.object({
-  name: z.string().min(3, "Username too short").max(70, "Username too long"),
+const restaurantSignupSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(70, "Name must be at most 70 characters"),
+
   email: z.string().email("Invalid email address"),
+
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
-    .max(100, "password too long")
+    .max(100, "Password must be at most 100 characters")
     .regex(
       /^(?=.*[A-Za-z])(?=.*\d).+$/,
       "Password must contain at least one letter and one number",
     ),
 
   inviteCode: z.string().min(1, "Invite code is required"),
+
+  token: z.string().min(1, "Invitation token is required"),
+});
+
+const platformAdminSignupSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(70, "Name must be at most 70 characters"),
+
+  email: z.string().email("Invalid email address"),
+
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .max(100, "Password must be at most 100 characters")
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d).+$/,
+      "Password must contain at least one letter and one number",
+    ),
+
+  setupSecret: z.string().min(1, "Setup secret is required"),
 });
 
 const loginSchema = z.object({
@@ -34,7 +61,8 @@ const resendVerificationSchema = z.object({
 });
 
 export {
-  signupSchema,
+  restaurantSignupSchema,
+  platformAdminSignupSchema,
   loginSchema,
   verifyEmailSchema,
   resendVerificationSchema,

@@ -13,6 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model PlatformAdmin {
+  id                     String    @id @default(uuid())
+  name                   String
+  email                  String    @unique
+  password               String
+  emailVerified          Boolean   @default(false)
+  verificationCodeHash   String?
+  verificationCodeExpiry DateTime?
+  createdAt              DateTime  @default(now())
+}
 
 model Admin {
   id                     String    @id @default(uuid())
@@ -24,7 +34,11 @@ model Admin {
   verificationCodeHash   String?
   verificationCodeExpiry DateTime?
   createdAt              DateTime  @default(now())
+
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }
+
 model Menu {
   id          String   @id @default(uuid())
   name        String
@@ -35,26 +49,86 @@ model Menu {
   available   Boolean  @default(true)
   createdAt   DateTime @default(now())
 
-  dailyMenus  DailyMenuItem[]
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  dailyMenus DailyMenuItem[]
+
+  @@index([restaurantId])
 }
 
 model DailyMenu {
   id        String   @id @default(uuid())
-  date      DateTime @unique
+  date      DateTime
   createdAt DateTime @default(now())
 
-  items     DailyMenuItem[]
-}
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
+  items DailyMenuItem[]
+
+  @@unique([restaurantId, date])
+  @@index([restaurantId])
+}
 
 model DailyMenuItem {
   id          String @id @default(uuid())
- dailyMenuId String
+  dailyMenuId String
   menuId      String
 
-  dailyMenu   DailyMenu @relation(fields: [dailyMenuId], references: [id], onDelete: Cascade)
-  menu        Menu      @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  dailyMenu DailyMenu @relation(fields: [dailyMenuId], references: [id], onDelete: Cascade)
+
+  menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
   @@unique([dailyMenuId, menuId])
- 
+}
+
+model Restaurant {
+  id      String  @id @default(uuid())
+  name    String
+  slug    String  @unique
+  logoUrl String?
+
+  primaryColor   String?
+  secondaryColor String?
+  accentColor    String?
+
+  defaultLanguage String @default("en")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  admins     Admin[]
+  menuItems  Menu[]
+  dailyMenus DailyMenu[]
+
+  invitations RestaurantInvitation[]
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
+
+model RestaurantInvitation {
+  id String @id @default(uuid())
+
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  invitedEmail String
+
+  tokenHash String @unique
+  codeHash  String
+
+  expiresAt DateTime
+  status    InvitationStatus @default(PENDING)
+
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([restaurantId])
+  @@index([expiresAt])
 }
