@@ -10,16 +10,19 @@ import {
   createDailyMenu,
   addToDailyMenuItem,
   removeFromDailyMenu,
+  getDailyMenu,
 } from "../controllers/dailyMenu.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 
+import { menuSchema, updateMenuSchema } from "../validators/menuValidator.js";
+
 import {
-  menuSchema,
-  updateMenuSchema,
   dailyMenuItemSchema,
-} from "../validators/menuValidator.js";
+  dailyMenuSchema,
+} from "../validators/dailyMenuValidator.js";
 
 import validateRequest from "../middlewares/validateRequest.js";
+import validateQuery from "../middlewares/validateQuery.js";
 
 const router = express.Router();
 
@@ -33,12 +36,14 @@ router.delete("/menu-items/:id", deleteMenu);
 
 // daily menu routes
 
-router.post("/daily-menu", createDailyMenu);
+router.post("/daily-menu", validateRequest(dailyMenuSchema), createDailyMenu);
 router.post(
   "/daily-menu/items",
   validateRequest(dailyMenuItemSchema),
   addToDailyMenuItem,
 );
 router.delete("/daily-menu/items/:id", removeFromDailyMenu);
+
+router.get("/daily-menu", validateQuery(dailyMenuSchema), getDailyMenu);
 
 export default router;

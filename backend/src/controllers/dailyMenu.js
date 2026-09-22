@@ -2,82 +2,98 @@ import { prisma } from "../config/db.js";
 
 const createDailyMenu = async (req, res) => {
   try {
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
+    const { date } = req.body;
 
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
+    if (!date) {
+      return res.status(400).json({
+        message: "Date is required.",
+      });
+    }
+
+    const selectedDate = new Date(date);
+
+    if (isNaN(selectedDate.getTime())) {
+      return res.status(400).json({
+        message: "Invalid date.",
+      });
+    }
+    const startOfDay = new Date(selectedDate);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(selectedDate);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    if (startOfDay < today) {
+      return res.status(400).json({
+        message: "You cannot create a daily menu for a past date.",
+      });
+    }
 
     const existingDailyMenu = await prisma.dailyMenu.findFirst({
       where: {
+        restaurantId: req.restaurantId,
         date: {
-          gte: startOfToday, //greater than the startOfToday
-          lte: endOfToday, //less than the endOfToday
+          gte: startOfDay,
+          lte: endOfDay,
         },
       },
     });
 
     if (existingDailyMenu) {
       return res.status(400).json({
-        message: "Today's daily menu already exists.",
+        message: "A daily menu already exists for this date.",
         dailyMenu: existingDailyMenu,
       });
     }
 
     const dailyMenu = await prisma.dailyMenu.create({
       data: {
-        date: startOfToday,
+        date: startOfDay,
+        restaurantId: req.restaurantId,
       },
     });
 
     return res.status(201).json({
-      message: "Today's daily menu created.",
+      message: "Daily menu created.",
       dailyMenu,
     });
   } catch (error) {
     if (error.code === "P2002") {
       return res.status(400).json({
-        message: "Today's daily menu already exists.",
+        message: "A daily menu already exists for this date.",
       });
     }
 
     return res.status(500).json({
-      message: "Failed to create today's daily menu.",
+      message: "Failed to create daily menu.",
     });
   }
 };
 
 const addToDailyMenuItem = async (req, res) => {
   try {
-    const { menuId } = req.body;
+    const { dailyMenuId, menuId } = req.body;
 
-    // Get the beginning and end of today
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
-
-    const endOfToday = new Date();
-    endOfToday.setHours(23, 59, 59, 999);
-
-    // Find today's DailyMenu
     const dailyMenu = await prisma.dailyMenu.findFirst({
       where: {
-        date: {
-          gte: startOfToday,
-          lte: endOfToday,
-        },
+        id: dailyMenuId,
+        restaurantId: req.restaurantId,
       },
     });
 
     if (!dailyMenu) {
       return res.status(404).json({
-        message: "Today's daily menu has not been created yet.",
+        message: "Daily menu not found.",
       });
     }
 
-    // Check whether the menu item exists
-    const menuItem = await prisma.menu.findUnique({
+    const menuItem = await prisma.menu.findFirst({
       where: {
         id: menuId,
+        restaurantId: req.restaurantId,
       },
     });
 
@@ -87,7 +103,6 @@ const addToDailyMenuItem = async (req, res) => {
       });
     }
 
-    // Check if the item is already in today's menu
     const alreadyAdded = await prisma.dailyMenuItem.findUnique({
       where: {
         dailyMenuId_menuId: {
@@ -99,11 +114,10 @@ const addToDailyMenuItem = async (req, res) => {
 
     if (alreadyAdded) {
       return res.status(400).json({
-        message: "This menu item is already in today's menu.",
+        message: "This menu item is already in this daily menu.",
       });
     }
 
-    // Add the item to today's menu
     const dailyMenuItem = await prisma.dailyMenuItem.create({
       data: {
         dailyMenuId: dailyMenu.id,
@@ -115,7 +129,7 @@ const addToDailyMenuItem = async (req, res) => {
     });
 
     return res.status(201).json({
-      message: "Menu item added to today's menu.",
+      message: "Menu item added to daily menu.",
       dailyMenuItem,
     });
   } catch (error) {
@@ -133,11 +147,20 @@ const removeFromDailyMenu = async (req, res) => {
       where: {
         id,
       },
+      include: {
+        dailyMenu: true,
+      },
     });
 
     if (!dailyMenuItem) {
       return res.status(404).json({
         message: "Daily menu item not found.",
+      });
+    }
+
+    if (dailyMenuItem.dailyMenu.restaurantId !== req.restaurantId) {
+      return res.status(403).json({
+        message: "You do not have permission to remove this menu item.",
       });
     }
 
@@ -148,7 +171,7 @@ const removeFromDailyMenu = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Menu item removed from today's menu.",
+      message: "Menu item removed from daily menu.",
     });
   } catch (error) {
     return res.status(500).json({
@@ -157,4 +180,60 @@ const removeFromDailyMenu = async (req, res) => {
   }
 };
 
-export { createDailyMenu, addToDailyMenuItem, removeFromDailyMenu };
+const getDailyMenu = async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    const selectedDate = new Date(date);
+
+    if (isNaN(selectedDate.getTime())) {
+      return res.status(400).json({
+        message: "Invalid date.",
+      });
+    }
+
+    const startOfDay = new Date(selectedDate);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(selectedDate);
+    endOfDay.setUTCHours(23, 59, 59, 999);
+
+    const dailyMenu = await prisma.dailyMenu.findFirst({
+      where: {
+        restaurantId: req.restaurantId,
+        date: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+      },
+      include: {
+        items: {
+          include: {
+            menu: true,
+          },
+        },
+      },
+    });
+
+    if (!dailyMenu) {
+      return res.status(404).json({
+        message: "Daily menu not found for this date.",
+      });
+    }
+
+    return res.status(200).json({
+      dailyMenu,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export {
+  createDailyMenu,
+  addToDailyMenuItem,
+  removeFromDailyMenu,
+  getDailyMenu,
+};

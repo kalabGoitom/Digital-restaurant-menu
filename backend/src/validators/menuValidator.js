@@ -28,8 +28,4 @@ const updateMenuSchema = menuSchema.partial().extend({
   available: z.boolean().optional(),
 });
 
-const dailyMenuItemSchema = z.object({
-  menuId: z.string().uuid("Invalid menu ID"),
-});
-
-export { menuSchema, updateMenuSchema, dailyMenuItemSchema };
+export { menuSchema, updateMenuSchema };

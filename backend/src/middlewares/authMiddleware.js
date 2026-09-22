@@ -9,9 +9,15 @@ const authMiddleware = async (req, res, next) => {
       token = req.cookies.jwt;
     }
     if (!token)
-      return res.status(401).json({ msg: "Not authorized, no token" });
+      return res.status(401).json({ message: "Not authorized, no token" });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (decoded.type !== "restaurant_admin") {
+      return res.status(403).json({
+        message: "Restaurant admin access required.",
+      });
+    }
 
     const user = await prisma.admin.findUnique({
       where: {
@@ -19,7 +25,7 @@ const authMiddleware = async (req, res, next) => {
       },
     });
 
-    if (!user) return res.status(404).json({ msg: "user not found" });
+    if (!user) return res.status(404).json({ message: "user not found" });
 
     if (!user.emailVerified) {
       return res.status(403).json({
@@ -29,6 +35,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     req.user = user;
+    req.restaurantId = user.restaurantId;
 
     next();
   } catch (error) {
