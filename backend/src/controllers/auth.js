@@ -20,19 +20,6 @@ const signup = async (req, res) => {
   try {
     const { name, email, password, inviteCode, token } = req.body;
 
-    // verfiy with zod
-    if (!email) {
-      return res.status(400).json({
-        message: "Email is required.",
-      });
-    }
-
-    if (!name || !password) {
-      return res.status(400).json({
-        message: "Name and password are required.",
-      });
-    }
-
     const normalizedEmail = email.trim().toLowerCase();
 
     const existingAdmin = await prisma.admin.findUnique({
@@ -59,6 +46,14 @@ const signup = async (req, res) => {
       where: {
         tokenHash,
       },
+
+      include: {
+        restaurant: {
+          select: {
+            isActive: true,
+          },
+        },
+      },
     });
 
     if (!invitation) {
@@ -70,6 +65,12 @@ const signup = async (req, res) => {
     if (invitation.status !== "PENDING") {
       return res.status(400).json({
         message: "This invitation is no longer valid.",
+      });
+    }
+
+    if (!invitation.restaurant.isActive) {
+      return res.status(400).json({
+        message: "This restaurant is currently deactivated.",
       });
     }
 
@@ -121,16 +122,6 @@ const signup = async (req, res) => {
         },
       });
 
-      await tx.restaurantInvitation.update({
-        where: {
-          id: invitation.id,
-        },
-        data: {
-          status: "ACCEPTED",
-          usedAt: new Date(),
-        },
-      });
-
       return admin;
     });
 
@@ -163,12 +154,25 @@ const login = async (req, res) => {
       where: {
         email: normalizedEmail,
       },
+      include: {
+        restaurant: {
+          select: {
+            isActive: true,
+          },
+        },
+      },
     });
 
     if (!admin)
       return res.status(404).json({
         message: `Admin doesn't exist.`,
       });
+
+    if (!admin.restaurant.isActive) {
+      return res.status(403).json({
+        message: "This restaurant is currently deactivated.",
+      });
+    }
 
     if (!admin.emailVerified) {
       return res.status(403).json({
@@ -254,24 +258,51 @@ const verifyEmail = async (req, res) => {
       });
     }
 
-    const verifiedAdmin = await prisma.admin.update({
+    const invitation = await prisma.restaurantInvitation.findFirst({
       where: {
-        id: admin.id,
+        restaurantId: admin.restaurantId,
+        invitedEmail: admin.email,
+        status: "PENDING",
       },
-      data: {
-        emailVerified: true,
-        verificationCodeHash: null,
-        verificationCodeExpiry: null,
+      orderBy: {
+        createdAt: "desc",
       },
+    });
+
+    const result2 = await prisma.$transaction(async (tx) => {
+      const verifiedAdmin = await tx.admin.update({
+        where: {
+          id: admin.id,
+        },
+        data: {
+          emailVerified: true,
+          verificationCodeHash: null,
+          verificationCodeExpiry: null,
+        },
+      });
+
+      if (invitation) {
+        await tx.restaurantInvitation.update({
+          where: {
+            id: invitation.id,
+          },
+          data: {
+            status: "ACCEPTED",
+            usedAt: new Date(),
+          },
+        });
+      }
+
+      return verifiedAdmin;
     });
 
     return res.status(200).json({
       message: "Email verified successfully.",
       admin: {
-        id: verifiedAdmin.id,
-        name: verifiedAdmin.name,
-        email: verifiedAdmin.email,
-        emailVerified: verifiedAdmin.emailVerified,
+        id: result2.id,
+        name: result2.name,
+        email: result2.email,
+        emailVerified: result2.emailVerified,
       },
     });
   } catch (error) {

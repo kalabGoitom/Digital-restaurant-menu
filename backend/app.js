@@ -3,11 +3,11 @@ import cors from "cors";
 import express, { json } from "express";
 import authRouters from "./src/routes/auth.js";
 import adminRoutes from "./src/routes/admin.js";
-import publicRouters from "./src/routes/public.js";
 import { connectDB, disconnectDB } from "./src/config/db.js";
 import cookieParser from "cookie-parser";
 import notFound from "./src/middlewares/notFound.js";
 import platformAdminRoutes from "./src/routes/platformAdminRoutes.js";
+import publicRestaurantRoutes from "./src/routes/publicRestaurantRoutes.js";
 
 const app = express();
 
@@ -22,9 +22,8 @@ app.use(
 
 app.use("/api/admin", authRouters);
 app.use("/api/admin", adminRoutes);
-app.use("/api/menu", publicRouters);
-
 app.use("/api/platform-admin", platformAdminRoutes);
+app.use("/api/public/restaurants", publicRestaurantRoutes);
 
 app.use(notFound);
 

@@ -23,6 +23,10 @@ const authMiddleware = async (req, res, next) => {
       where: {
         id: decoded.id,
       },
+
+      include: {
+        restaurant: true,
+      },
     });
 
     if (!user) return res.status(404).json({ message: "user not found" });
@@ -34,8 +38,16 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
+    if (!user.restaurant || !user.restaurant.isActive) {
+      return res.status(403).json({
+        message:
+          "This restaurant account has been deactivated. Please contact support.",
+      });
+    }
+
     req.user = user;
     req.restaurantId = user.restaurantId;
+    req.restaurant = user.restaurant;
 
     next();
   } catch (error) {

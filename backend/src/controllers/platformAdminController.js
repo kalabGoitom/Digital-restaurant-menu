@@ -268,20 +268,11 @@ const resendPlatformAdminVerificationCode = async (req, res) => {
 
 const createRestaurant = async (req, res) => {
   try {
-    console.log(req.body);
     const { name, ownerEmail } = req.body;
-
-    if (!name || !ownerEmail) {
-      return res.status(400).json({
-        message: "Restaurant name and owner email are  required.",
-      });
-    }
-
-    const normalizedOwnerEmail = ownerEmail.trim().toLowerCase();
 
     const existingAdmin = await prisma.admin.findUnique({
       where: {
-        email: normalizedOwnerEmail,
+        email: ownerEmail,
       },
     });
 
@@ -312,7 +303,7 @@ const createRestaurant = async (req, res) => {
       const invitation = await tx.restaurantInvitation.create({
         data: {
           restaurantId: restaurant.id,
-          invitedEmail: normalizedOwnerEmail,
+          invitedEmail: ownerEmail,
           tokenHash,
           codeHash,
           expiresAt,
@@ -347,10 +338,366 @@ const createRestaurant = async (req, res) => {
   }
 };
 
+const getAllRestaurants = async (req, res) => {
+  try {
+    const restaurants = await prisma.restaurant.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        logoUrl: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return res.status(200).json({
+      restaurants,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const getRestaurantById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const restaurant = await prisma.restaurant.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        logoUrl: true,
+        primaryColor: true,
+        secondaryColor: true,
+        accentColor: true,
+        isActive: true,
+        defaultLanguage: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found.",
+      });
+    }
+
+    return res.status(200).json({
+      restaurant,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const getRestaurantInvitation = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const invitation = await prisma.restaurantInvitation.findFirst({
+      where: {
+        restaurantId: id,
+      },
+      select: {
+        id: true,
+        invitedEmail: true,
+        expiresAt: true,
+        status: true,
+        usedAt: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (!invitation) {
+      return res.status(404).json({
+        message: "Invitation not found for this restaurant.",
+      });
+    }
+
+    return res.status(200).json({
+      invitation,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const resendRestaurantInvitation = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const restaurant = await prisma.restaurant.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        isActive: true,
+      },
+    });
+
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found.",
+      });
+    }
+
+    if (!restaurant.isActive) {
+      return res.status(400).json({
+        message: "Cannot resend invitation for a deactivated restaurant.",
+      });
+    }
+
+    const invitation = await prisma.restaurantInvitation.findFirst({
+      where: {
+        restaurantId: id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (!invitation) {
+      return res.status(404).json({
+        message: "Invitation not found for this restaurant.",
+      });
+    }
+
+    if (invitation.status === "ACCEPTED") {
+      return res.status(400).json({
+        message: "This invitation has already been accepted.",
+      });
+    }
+
+    const token = generateInvitationToken();
+    const code = generateInvitationCode();
+
+    const tokenHash = hashInvitationValue(token);
+    const codeHash = hashInvitationValue(code);
+
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+    const result = await prisma.$transaction(async (tx) => {
+      await tx.restaurantInvitation.update({
+        where: {
+          id: invitation.id,
+        },
+        data: {
+          status: "REVOKED",
+        },
+      });
+
+      const newInvitation = await tx.restaurantInvitation.create({
+        data: {
+          restaurantId: restaurant.id,
+          invitedEmail: invitation.invitedEmail,
+          tokenHash,
+          codeHash,
+          expiresAt,
+        },
+      });
+
+      return newInvitation;
+    });
+
+    const invitationLink = `${process.env.FRONTEND_URL}/restaurant/signup?token=${token}`;
+
+    return res.status(200).json({
+      message: "Restaurant invitation resent successfully.",
+      invitation: {
+        link: invitationLink,
+        code,
+        expiresAt: result.expiresAt,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const revokeRestaurantInvitation = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const invitation = await prisma.restaurantInvitation.findFirst({
+      where: {
+        restaurantId: id,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (!invitation) {
+      return res.status(404).json({
+        message: "Invitation not found for this restaurant.",
+      });
+    }
+
+    if (invitation.status === "ACCEPTED") {
+      return res.status(400).json({
+        message: "This invitation has already been accepted.",
+      });
+    }
+
+    if (invitation.status === "REVOKED") {
+      return res.status(400).json({
+        message: "This invitation has already been revoked.",
+      });
+    }
+
+    const revokedInvitation = await prisma.restaurantInvitation.update({
+      where: {
+        id: invitation.id,
+      },
+      data: {
+        status: "REVOKED",
+      },
+    });
+
+    return res.status(200).json({
+      message: "Restaurant invitation revoked successfully.",
+      invitation: {
+        id: revokedInvitation.id,
+        status: revokedInvitation.status,
+        revokedAt: new Date(),
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const updateRestaurant = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const restaurant = await prisma.restaurant.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found.",
+      });
+    }
+
+    const updatedRestaurant = await prisma.restaurant.update({
+      where: {
+        id,
+      },
+      data: req.body,
+    });
+
+    return res.status(200).json({
+      message: "Restaurant updated successfully.",
+      restaurant: {
+        id: updatedRestaurant.id,
+        name: updatedRestaurant.name,
+        slug: updatedRestaurant.slug,
+        logoUrl: updatedRestaurant.logoUrl,
+        primaryColor: updatedRestaurant.primaryColor,
+        secondaryColor: updatedRestaurant.secondaryColor,
+        accentColor: updatedRestaurant.accentColor,
+        defaultLanguage: updatedRestaurant.defaultLanguage,
+        updatedAt: updatedRestaurant.updatedAt,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const deactivateRestaurant = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const restaurant = await prisma.restaurant.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        isActive: true,
+      },
+    });
+
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found.",
+      });
+    }
+
+    if (!restaurant.isActive) {
+      return res.status(400).json({
+        message: "Restaurant is already deactivated.",
+      });
+    }
+
+    const updatedRestaurant = await prisma.restaurant.update({
+      where: {
+        id,
+      },
+      data: {
+        isActive: false,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Restaurant deactivated successfully.",
+      restaurant: {
+        id: updatedRestaurant.id,
+        name: updatedRestaurant.name,
+        isActive: updatedRestaurant.isActive,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export {
   platformAdminSignup,
   platformAdminLogin,
   verifyPlatformAdminEmail,
   resendPlatformAdminVerificationCode,
   createRestaurant,
+  getAllRestaurants,
+  getRestaurantById,
+  getRestaurantInvitation,
+  resendRestaurantInvitation,
+  revokeRestaurantInvitation,
+  updateRestaurant,
+  deactivateRestaurant,
 };
