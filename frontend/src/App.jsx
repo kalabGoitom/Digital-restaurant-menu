@@ -1,30 +1,35 @@
-import { AuthProvider } from "./context/AuthContext.jsx";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminLogin from "./pages/AdminLogin";
-import AdminSignup from "./pages/AdminSignup";
-import VerifyEmail from "./pages/VerifyEmail";
-import Home from "./pages/Home";
-import ManageDailyMenu from "./pages/ManageDailyMenu";
-import ManageMenu from "./pages/ManageMenu";
-import NotFound from "./pages/NotFound";
-import ProtectedRoute from "./routes/ProtectedRoute";
+import { Routes, Route, Navigate } from "react-router-dom";
+import PlatformSignup from "./pages/PlatformSignup";
 
 function App() {
-  const path = window.location.pathname;
+  return (
+    <Routes>
+      {/* Platform admin authentication */}
+      <Route path="/platform/signup" element={<PlatformSignup />} />
+      <Route path="/platform/login" element={<div>Platform Admin Login</div>} />
+      <Route
+        path="/platform/verify-email"
+        element={<div>Platform Admin Email Verification</div>}
+      />
 
-  const routes = {
-    "/": <Home />,
-    "/admin/login": <AdminLogin />,
-    "/admin/signup": <AdminSignup />,
-    "/admin/verify-email": <VerifyEmail />,
-    "/admin/dashboard": <ProtectedRoute><AdminDashboard /></ProtectedRoute>,
-    "/admin/menu-items": <ProtectedRoute><ManageMenu /></ProtectedRoute>,
-    "/admin/today-menu": <ProtectedRoute><ManageDailyMenu /></ProtectedRoute>,
-  };
+      {/* Restaurant admin authentication */}
+      <Route
+        path="/restaurant/signup"
+        element={<div>Restaurant Admin Signup</div>}
+      />
+      <Route
+        path="/restaurant/login"
+        element={<div>Restaurant Admin Login</div>}
+      />
+      <Route
+        path="/restaurant/verify-email"
+        element={<div>Restaurant Admin Email Verification</div>}
+      />
 
-  const page = routes[path] || <NotFound path={path} />;
-
-  return <AuthProvider>{page}</AuthProvider>;
+      {/* Unknown URLs */}
+      <Route path="*" element={<Navigate to="/platform/login" replace />} />
+    </Routes>
+  );
 }
 
 export default App;
