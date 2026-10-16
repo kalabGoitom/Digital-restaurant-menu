@@ -687,6 +687,35 @@ const deactivateRestaurant = async (req, res) => {
   }
 };
 
+const getCurrentPlatformAdmin = async (req, res) => {
+  try {
+    const admin = await prisma.platformAdmin.findUnique({
+      where: {
+        id: req.platformAdmin.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        emailVerified: true,
+        createdAt: true,
+      },
+    });
+
+    if (!admin) {
+      return res.status(401).json({
+        message: "Platform admin account not found.",
+      });
+    }
+
+    return res.status(200).json({ admin });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to retrieve platform admin.",
+    });
+  }
+};
+
 export {
   platformAdminSignup,
   platformAdminLogin,
@@ -700,4 +729,5 @@ export {
   revokeRestaurantInvitation,
   updateRestaurant,
   deactivateRestaurant,
+  getCurrentPlatformAdmin,
 };

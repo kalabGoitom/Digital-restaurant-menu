@@ -18,4 +18,33 @@ const signupPlatformAdmin = async (formData) => {
   return data;
 };
 
-export { signupPlatformAdmin };
+const loginPlatformAdmin = async (formData) => {
+  const response = await fetch(`${API_URL}/platform-admin/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(formData),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Login failed.");
+  }
+  return data;
+};
+
+const getCurrentPlatformAdmin = async () => {
+  const response = await fetch(`${API_URL}/platform-admin/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Authentication required.");
+  }
+
+  return data.admin;
+};
+
+export { signupPlatformAdmin, loginPlatformAdmin, getCurrentPlatformAdmin };

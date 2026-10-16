@@ -1,12 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import PlatformSignup from "./pages/PlatformSignup";
+import PlatformSignup from "./pages/PlatformSignup.jsx";
+import PlatformLogin from "./pages/PlatformAdminLogin.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (
     <Routes>
       {/* Platform admin authentication */}
       <Route path="/platform/signup" element={<PlatformSignup />} />
-      <Route path="/platform/login" element={<div>Platform Admin Login</div>} />
+      <Route path="/platform/login" element={<PlatformLogin />} />
       <Route
         path="/platform/verify-email"
         element={<div>Platform Admin Email Verification</div>}
@@ -25,6 +27,13 @@ function App() {
         path="/restaurant/verify-email"
         element={<div>Restaurant Admin Email Verification</div>}
       />
+
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/platform/dashboard"
+          element={<div>Platform Admin Dashboard — Coming Soon</div>}
+        />
+      </Route>
 
       {/* Unknown URLs */}
       <Route path="*" element={<Navigate to="/platform/login" replace />} />

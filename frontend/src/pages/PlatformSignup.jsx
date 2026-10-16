@@ -9,6 +9,10 @@ function PlatformSignup() {
     setupSecret: "",
   });
 
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -21,17 +25,37 @@ function PlatformSignup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setMessage("");
+    setError("");
+    setIsLoading(true);
+
     try {
       const data = await signupPlatformAdmin(formData);
-      console.log(data);
+      setMessage(
+        data.message || "Account created successfully. Check your email.",
+      );
     } catch (error) {
-      console.error(error.message);
+      setError(error.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <main>
       <h1>Create Platform Admin Account</h1>
+
+      {message && (
+        <p role="status" style={{ color: "green" }}>
+          {message}
+        </p>
+      )}
+
+      {error && (
+        <p role="alert" style={{ color: "crimson" }}>
+          {error}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Full name</label>
@@ -74,7 +98,9 @@ function PlatformSignup() {
           required
         />
 
-        <button type="submit">Create account</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Creating account..." : "Create account"}
+        </button>
       </form>
     </main>
   );

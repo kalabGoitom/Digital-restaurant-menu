@@ -12,6 +12,7 @@ import {
   revokeRestaurantInvitation,
   updateRestaurant,
   deactivateRestaurant,
+  getCurrentPlatformAdmin,
 } from "../controllers/platformAdminController.js";
 import protectPlatformAdmin from "../middlewares/platformAdminMiddleware.js";
 import {
@@ -87,5 +88,7 @@ router.post(
   validateParams(restaurantIdSchema),
   deactivateRestaurant,
 );
+
+router.get("/me", protectPlatformAdmin, getCurrentPlatformAdmin);
 
 export default router;
