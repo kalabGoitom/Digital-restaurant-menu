@@ -716,6 +716,28 @@ const getCurrentPlatformAdmin = async (req, res) => {
   }
 };
 
+const getPlatformDashboardStats = async (req, res) => {
+  try {
+    const [totalRestaurants, activeRestaurants] = await Promise.all([
+      prisma.restaurant.count(),
+      prisma.restaurant.count({
+        where: { isActive: true },
+      }),
+    ]);
+
+    return res.status(200).json({
+      stats: {
+        totalRestaurants,
+        activeRestaurants,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to retrieve dashboard statistics.",
+    });
+  }
+};
+
 export {
   platformAdminSignup,
   platformAdminLogin,
@@ -730,4 +752,5 @@ export {
   updateRestaurant,
   deactivateRestaurant,
   getCurrentPlatformAdmin,
+  getPlatformDashboardStats,
 };

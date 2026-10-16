@@ -13,6 +13,7 @@ import {
   updateRestaurant,
   deactivateRestaurant,
   getCurrentPlatformAdmin,
+  getPlatformDashboardStats,
 } from "../controllers/platformAdminController.js";
 import protectPlatformAdmin from "../middlewares/platformAdminMiddleware.js";
 import {
@@ -90,5 +91,7 @@ router.post(
 );
 
 router.get("/me", protectPlatformAdmin, getCurrentPlatformAdmin);
+
+router.get("/dashboard/stats", protectPlatformAdmin, getPlatformDashboardStats);
 
 export default router;

@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import PlatformSignup from "./pages/PlatformSignup.jsx";
 import PlatformLogin from "./pages/PlatformAdminLogin.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import PlatformDashboard from "./pages/platformDashboard.jsx";
 
 function App() {
   return (
@@ -29,10 +30,7 @@ function App() {
       />
 
       <Route element={<ProtectedRoute />}>
-        <Route
-          path="/platform/dashboard"
-          element={<div>Platform Admin Dashboard — Coming Soon</div>}
-        />
+        <Route path="/platform/dashboard" element={<PlatformDashboard />} />
       </Route>
 
       {/* Unknown URLs */}
