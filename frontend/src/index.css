@@ -551,3 +551,160 @@ button {
     white-space: normal;
   }
 }
+
+/* Create restaurant form */
+
+.restaurants-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.create-restaurant-button {
+  padding: 11px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.create-restaurant-button:hover {
+  background: #4338ca;
+}
+
+.create-restaurant-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 520px;
+  margin: 24px 0;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.create-restaurant-form h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #111827;
+}
+
+.create-restaurant-form > p {
+  margin: 0 0 12px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.create-restaurant-form label {
+  margin-top: 8px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.create-restaurant-form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font: inherit;
+  outline: none;
+}
+
+.create-restaurant-form input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 12%);
+}
+
+.create-restaurant-form button[type="submit"] {
+  margin-top: 12px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.create-restaurant-form button[type="submit"]:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.create-restaurant-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.create-restaurant-error {
+  color: #dc2626 !important;
+  font-size: 14px;
+}
+
+.restaurant-invitation {
+  max-width: 520px;
+  margin: 20px 0;
+  padding: 24px;
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  background: #ecfdf5;
+}
+
+.restaurant-invitation h2 {
+  margin: 0 0 10px;
+  color: #065f46;
+  font-size: 20px;
+}
+
+.restaurant-invitation > p {
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.invitation-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.invitation-field label {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.invitation-field a {
+  overflow-wrap: anywhere;
+  color: #4338ca;
+}
+
+.invitation-field strong {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.restaurant-invitation .invitation-expiry {
+  margin-bottom: 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.restaurant-info h2 a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.restaurant-info h2 a:hover {
+  color: #4f46e5;
+}

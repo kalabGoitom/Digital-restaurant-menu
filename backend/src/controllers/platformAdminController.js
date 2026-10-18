@@ -687,6 +687,57 @@ const deactivateRestaurant = async (req, res) => {
   }
 };
 
+const reactivateRestaurant = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const restaurant = await prisma.restaurant.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        isActive: true,
+      },
+    });
+
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found.",
+      });
+    }
+
+    if (restaurant.isActive) {
+      return res.status(400).json({
+        message: "Restaurant is already activated.",
+      });
+    }
+
+    const updatedRestaurant = await prisma.restaurant.update({
+      where: {
+        id,
+      },
+      data: {
+        isActive: true,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Restaurant reactivated successfully.",
+      restaurant: {
+        id: updatedRestaurant.id,
+        name: updatedRestaurant.name,
+        isActive: updatedRestaurant.isActive,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 const getCurrentPlatformAdmin = async (req, res) => {
   try {
     const admin = await prisma.platformAdmin.findUnique({
@@ -751,6 +802,7 @@ export {
   revokeRestaurantInvitation,
   updateRestaurant,
   deactivateRestaurant,
+  reactivateRestaurant,
   getCurrentPlatformAdmin,
   getPlatformDashboardStats,
 };

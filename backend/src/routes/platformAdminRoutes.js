@@ -12,6 +12,7 @@ import {
   revokeRestaurantInvitation,
   updateRestaurant,
   deactivateRestaurant,
+  reactivateRestaurant,
   getCurrentPlatformAdmin,
   getPlatformDashboardStats,
 } from "../controllers/platformAdminController.js";
@@ -88,6 +89,13 @@ router.post(
   protectPlatformAdmin,
   validateParams(restaurantIdSchema),
   deactivateRestaurant,
+);
+
+router.post(
+  "/restaurants/:id/reactivate",
+  protectPlatformAdmin,
+  validateParams(restaurantIdSchema),
+  reactivateRestaurant,
 );
 
 router.get("/me", protectPlatformAdmin, getCurrentPlatformAdmin);

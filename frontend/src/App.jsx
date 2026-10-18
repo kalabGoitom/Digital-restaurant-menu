@@ -4,6 +4,8 @@ import PlatformLogin from "./pages/PlatformAdminLogin.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PlatformDashboard from "./pages/platformDashboard.jsx";
 import PlatformRestaurants from "./pages/PlatformRestaurants.jsx";
+import PlatformSettings from "./pages/PlatformSettings.jsx";
+import PlatformRestaurantDetails from "./pages/PlatformRestaurantDetails.jsx";
 
 function App() {
   return (
@@ -33,6 +35,11 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/platform/dashboard" element={<PlatformDashboard />} />
         <Route path="/platform/restaurants" element={<PlatformRestaurants />} />
+        <Route path="/platform/settings" element={<PlatformSettings />} />
+        <Route
+          path="/platform/restaurants/:id"
+          element={<PlatformRestaurantDetails />}
+        />
       </Route>
 
       {/* Unknown URLs */}

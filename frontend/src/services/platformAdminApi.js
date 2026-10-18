@@ -44,3 +44,92 @@ export const getAllRestaurants = async () => {
 
   return data.restaurants;
 };
+
+export const createRestaurant = async (restaurantData) => {
+  const response = await fetch(`${API_URL}/platform-admin/restaurants`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(restaurantData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to create restaurant.");
+  }
+
+  return data;
+};
+
+export const getRestaurantById = async (id) => {
+  const response = await fetch(`${API_URL}/platform-admin/restaurants/${id}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch restaurant.");
+  }
+
+  return data.restaurant;
+};
+
+export const updateRestaurant = async (id, restaurantData) => {
+  const response = await fetch(`${API_URL}/platform-admin/restaurants/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(restaurantData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update restaurant.");
+  }
+
+  return data.restaurant;
+};
+
+export const deactivateRestaurant = async (id) => {
+  const response = await fetch(
+    `${API_URL}/platform-admin/restaurants/${id}/deactivate`,
+    {
+      method: "POST",
+      credentials: "include",
+    },
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to deactivate restaurant.");
+  }
+
+  return data.restaurant;
+};
+
+export const reactivateRestaurant = async (id) => {
+  const response = await fetch(
+    `${API_URL}/platform-admin/restaurants/${id}/reactivate`,
+    {
+      method: "POST",
+      credentials: "include",
+    },
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to reactivate restaurant.");
+  }
+
+  return data.restaurant;
+};
