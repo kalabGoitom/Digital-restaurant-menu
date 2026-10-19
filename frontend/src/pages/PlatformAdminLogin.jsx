@@ -45,7 +45,7 @@ function PlatformLogin() {
   };
 
   return (
-    <main>
+    <main className="platform-login">
       <h1>Platform Admin Login</h1>
       <p>Sign in to manage your NOVA platform.</p>
 

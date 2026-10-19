@@ -42,7 +42,7 @@ function PlatformSignup() {
   };
 
   return (
-    <main>
+    <main className="platform-signup">
       <h1>Create Platform Admin Account</h1>
 
       {message && (

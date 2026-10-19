@@ -708,3 +708,568 @@ button {
 .restaurant-info h2 a:hover {
   color: #4f46e5;
 }
+
+/* Restaurant status actions */
+.restaurant-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.restaurant-status-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.restaurant-status-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.restaurant-status-actions .deactivate-button {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.restaurant-status-actions .deactivate-button:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.restaurant-status-actions .reactivate-button {
+  background: #059669;
+  color: #ffffff;
+}
+
+.restaurant-status-actions .reactivate-button:hover:not(:disabled) {
+  background: #047857;
+}
+/* Success and error messages */
+.restaurant-status-actions p {
+  width: 100%;
+  margin: 0;
+  font-size: 14px;
+}
+
+.restaurant-status-actions .error-message {
+  color: #b91c1c;
+}
+
+.restaurant-status-actions p:not(.error-message) {
+  color: #047857;
+}
+
+/* ========================================
+   Restaurant Details Page
+======================================== */
+
+.restaurant-details-header {
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.restaurant-details-header .restaurants-heading h1 {
+  overflow-wrap: anywhere;
+}
+
+.back-to-restaurants {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.back-to-restaurants:hover {
+  background: #f9fafb;
+  border-color: #cbd5e1;
+}
+
+/* Details card */
+.restaurant-details-card {
+  width: 100%;
+  max-width: 760px;
+  margin: 0;
+  padding: 30px;
+  gap: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 4%);
+}
+
+.restaurant-details-card .details-section-title {
+  margin: 0 0 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Information rows */
+.restaurant-details-card > div.invitation-field {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1.2fr);
+  align-items: start;
+  gap: 16px;
+  margin-top: 0;
+  padding: 17px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.restaurant-details-card .invitation-field label {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.restaurant-details-card .invitation-field strong {
+  min-width: 0;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Active / inactive badge */
+.restaurant-details-card .restaurant-status-badge {
+  display: inline-flex;
+  justify-self: start;
+  align-items: center;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.restaurant-details-card .restaurant-status-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.restaurant-details-card .restaurant-status-badge.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Edit and status action buttons */
+.restaurant-details-card > button,
+.restaurant-details-card form button {
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.restaurant-details-card > button {
+  margin-top: 22px;
+}
+
+.restaurant-details-card > button:hover:not(:disabled),
+.restaurant-details-card form button:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.restaurant-details-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Edit form */
+.restaurant-details-card .restaurant-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.restaurant-details-card .restaurant-edit-form h2 {
+  margin: 0 0 12px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.restaurant-details-card .restaurant-edit-form label {
+  margin-top: 8px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.restaurant-details-card .restaurant-edit-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.restaurant-details-card .restaurant-edit-form input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 12%);
+}
+
+.restaurant-details-card .restaurant-edit-form button[type="submit"] {
+  margin-top: 14px;
+  border-color: #4f46e5;
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.restaurant-details-card
+  .restaurant-edit-form
+  button[type="submit"]:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.restaurant-details-card .restaurant-edit-form button[type="button"] {
+  margin-top: 0;
+}
+
+/* Status action area */
+.restaurant-details-card .restaurant-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.restaurant-details-card .restaurant-status-actions button {
+  margin: 0;
+}
+
+.restaurant-details-card .restaurant-status-actions .deactivate-button {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.restaurant-details-card
+  .restaurant-status-actions
+  .deactivate-button:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.restaurant-details-card .restaurant-status-actions .reactivate-button {
+  border-color: #059669;
+  background: #059669;
+  color: #ffffff;
+}
+
+.restaurant-details-card
+  .restaurant-status-actions
+  .reactivate-button:hover:not(:disabled) {
+  background: #047857;
+}
+
+.restaurant-details-card .restaurant-status-actions p {
+  width: 100%;
+  margin: 0;
+  font-size: 13px;
+}
+
+.restaurant-details-card .restaurant-status-actions .error-message {
+  color: #b91c1c;
+}
+
+.restaurant-details-card .restaurant-status-actions p:not(.error-message) {
+  color: #047857;
+}
+
+/* Responsive layout */
+@media (max-width: 640px) {
+  .restaurant-details-header {
+    align-items: flex-start;
+  }
+
+  .restaurant-details-header .back-to-restaurants {
+    align-self: flex-start;
+  }
+
+  .restaurant-details-card {
+    padding: 20px 16px;
+  }
+
+  .restaurant-details-card > div.invitation-field {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 14px 0;
+  }
+
+  .restaurant-details-card .restaurant-status-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .restaurant-details-card .restaurant-status-actions button {
+    width: 100%;
+  }
+}
+
+/* Platform login page */
+.platform-login {
+  display: flex;
+  flex-direction: column;
+  width: min(100% - 32px, 440px);
+  margin: 80px auto;
+  padding: 32px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+.platform-login h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.platform-login > p {
+  margin: 10px 0 28px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.platform-login form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.platform-login form div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.platform-login label {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.platform-login input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.platform-login input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 12%);
+}
+
+.platform-login button[type="submit"] {
+  height: 44px;
+  margin-top: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.platform-login button[type="submit"]:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.platform-login button[type="submit"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.platform-login a {
+  color: #4f46e5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.platform-login a:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+.platform-login [role="status"],
+.platform-login [role="alert"] {
+  margin: 16px 0 -8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.platform-login [role="status"] {
+  background: #ecfdf5;
+}
+
+.platform-login [role="alert"] {
+  background: #fef2f2;
+}
+
+@media (max-width: 480px) {
+  .platform-login {
+    width: min(100% - 24px, 440px);
+    margin: 32px auto;
+    padding: 24px 20px;
+  }
+
+  .platform-login h1 {
+    font-size: 24px;
+  }
+}
+
+/* Platform signup page */
+.platform-signup {
+  display: flex;
+  flex-direction: column;
+  width: min(100% - 32px, 440px);
+  margin: 80px auto;
+  padding: 32px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+.platform-signup h1 {
+  margin: 0 0 28px;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.platform-signup form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.platform-signup label {
+  margin-top: 10px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.platform-signup input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.platform-signup input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 12%);
+}
+
+.platform-signup button[type="submit"] {
+  height: 44px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.platform-signup button[type="submit"]:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.platform-signup button[type="submit"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.platform-signup [role="status"],
+.platform-signup [role="alert"] {
+  margin: 0 0 18px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.platform-signup [role="status"] {
+  background: #ecfdf5;
+}
+
+.platform-signup [role="alert"] {
+  background: #fef2f2;
+}
+
+@media (max-width: 480px) {
+  .platform-signup {
+    width: min(100% - 24px, 440px);
+    margin: 32px auto;
+    padding: 24px 20px;
+  }
+
+  .platform-signup h1 {
+    font-size: 24px;
+  }
+}

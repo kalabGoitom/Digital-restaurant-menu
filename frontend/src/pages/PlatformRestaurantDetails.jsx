@@ -175,19 +175,21 @@ function PlatformRestaurantDetails() {
 
   return (
     <main className="platform-restaurants">
-      <div className="restaurants-header">
+      <div className="restaurants-header restaurant-details-header">
         <div className="restaurants-heading">
           <h1>{restaurant.name}</h1>
           <p>Restaurant details and account status.</p>
         </div>
 
-        <Link to="/platform/restaurants">Back to Restaurants</Link>
+        <Link className="back-to-restaurants" to="/platform/restaurants">
+          ← Back to Restaurants
+        </Link>
       </div>
 
-      <section className="create-restaurant-form">
+      <section className="create-restaurant-form restaurant-details-card">
         {!isEditing ? (
           <>
-            <h2>Restaurant Information</h2>
+            <h2 className="details-section-title">Restaurant Information</h2>
             <div className="invitation-field">
               <label>Restaurant name</label>
               <strong>{restaurant.name}</strong>
@@ -198,7 +200,13 @@ function PlatformRestaurantDetails() {
             </div>
             <div className="invitation-field">
               <label>Status</label>
-              <strong>{restaurant.isActive ? "Active" : "Inactive"}</strong>
+              <strong
+                className={`restaurant-status-badge ${
+                  restaurant.isActive ? "active" : "inactive"
+                }`}
+              >
+                {restaurant.isActive ? "Active" : "Inactive"}
+              </strong>
             </div>
             <div className="invitation-field">
               <label>Default language</label>
@@ -237,6 +245,7 @@ function PlatformRestaurantDetails() {
                   type="button"
                   onClick={handleDeactivate}
                   disabled={statusLoading}
+                  className="deactivate-button"
                 >
                   {statusLoading ? "Please wait..." : "Deactivate Restaurant"}
                 </button>
@@ -245,6 +254,7 @@ function PlatformRestaurantDetails() {
                   type="button"
                   onClick={handleReactivate}
                   disabled={statusLoading}
+                  className="reactivate-button"
                 >
                   {statusLoading ? "Please wait..." : "Reactivate Restaurant"}
                 </button>
@@ -252,7 +262,7 @@ function PlatformRestaurantDetails() {
             </div>
           </>
         ) : (
-          <form onSubmit={handleEditSubmit}>
+          <form onSubmit={handleEditSubmit} className="restaurant-edit-form">
             <h2>Edit Restaurant</h2>
 
             <label htmlFor="edit-name">Restaurant name</label>
