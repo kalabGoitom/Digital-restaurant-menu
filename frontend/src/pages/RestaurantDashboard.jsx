@@ -1,9 +1,30 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { logoutRestaurantAdmin } from "../services/authApi.js";
+import {
+  logoutRestaurantAdmin,
+  getCurrentRestaurantAdmin,
+} from "../services/authApi.js";
 import "../RestaurantDashboard.css";
 
 function RestaurantDashboard() {
+  const [admin, setAdmin] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const currentAdmin = await getCurrentRestaurantAdmin();
+        setAdmin(currentAdmin);
+      } catch (error) {
+        console.error("Failed to fetch restaurant admin:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAdmin();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -18,15 +39,20 @@ function RestaurantDashboard() {
     <main className="restaurant-dashboard">
       <header className="dashboard-header">
         <div>
-          <h1>Restaurant Dashboard</h1>
-          <p>Manage your restaurant's digital menu.</p>
+          <h1>
+            {isLoading
+              ? "Loading restaurant..."
+              : admin?.restaurant?.name || "Restaurant Dashboard"}
+          </h1>
+
+          <p>Restaurant Admin Dashboard</p>
         </div>
 
         <button onClick={handleLogout}>Log out</button>
       </header>
 
       <section className="dashboard-welcome">
-        <h2>Welcome back!</h2>
+        <h2>Welcome back{admin?.name ? `, ${admin.name}` : ""}!</h2>
         <p>Manage your menu items and decide what to serve today.</p>
       </section>
 
