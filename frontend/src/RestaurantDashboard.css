@@ -37,6 +37,27 @@
   cursor: pointer;
 }
 
+.dashboard-card button:not(:disabled) {
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dashboard-card button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.dashboard-card button:not(:disabled):focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 3px;
+}
+
+.dashboard-card button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .dashboard-welcome {
   padding: 28px;
   margin-bottom: 28px;

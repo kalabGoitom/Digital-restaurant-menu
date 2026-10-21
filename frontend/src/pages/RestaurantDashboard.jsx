@@ -4,6 +4,7 @@ import {
   logoutRestaurantAdmin,
   getCurrentRestaurantAdmin,
 } from "../services/authApi.js";
+import RestaurantBranding from "../components/RestaurantBranding.jsx";
 import "../RestaurantDashboard.css";
 
 function RestaurantDashboard() {
@@ -39,13 +40,8 @@ function RestaurantDashboard() {
     <main className="restaurant-dashboard">
       <header className="dashboard-header">
         <div>
-          <h1>
-            {isLoading
-              ? "Loading restaurant..."
-              : admin?.restaurant?.name || "Restaurant Dashboard"}
-          </h1>
-
-          <p>Restaurant Admin Dashboard</p>
+          <RestaurantBranding restaurant={admin?.restaurant} />
+          <h1>{isLoading ? "Loading..." : "Dashboard"}</h1>
         </div>
 
         <button onClick={handleLogout}>Log out</button>
@@ -60,19 +56,35 @@ function RestaurantDashboard() {
         <article className="dashboard-card">
           <h3>Menu Items</h3>
           <p>Add, edit, and manage your restaurant's dishes.</p>
-          <button disabled>Manage Menu</button>
+          <button
+            type="button"
+            onClick={() => navigate("/restaurant/menu-items")}
+          >
+            Manage Menu
+          </button>
         </article>
 
         <article className="dashboard-card">
           <h3>Today's Menu</h3>
           <p>Choose which dishes are available today.</p>
-          <button disabled>Manage Today's Menu</button>
+          <button
+            type="button"
+            onClick={() => navigate("/restaurant/daily-menu")}
+          >
+            Manage Today's Menu
+          </button>
         </article>
 
         <article className="dashboard-card">
           <h3>Restaurant Settings</h3>
           <p>View and manage your restaurant information.</p>
-          <button disabled>Settings</button>
+          <button
+            type="button"
+            disabled
+            title="Restaurant settings are not implemented yet"
+          >
+            Coming soon
+          </button>
         </article>
       </section>
     </main>

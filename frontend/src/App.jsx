@@ -11,6 +11,7 @@ import RestaurantAdminLogin from "./pages/RestaurantAdminLogin.jsx";
 import VerifyRestaurantEmail from "./pages/VerifyRestaurantEmail.jsx";
 import RestaurantProtectedRoute from "./components/RestaurantProtectedRoute.jsx";
 import RestaurantDashboard from "./pages/RestaurantDashboard.jsx";
+import MenuItems from "./pages/MenuItems.jsx";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
       {/* Restaurant admin protected routes */}
       <Route element={<RestaurantProtectedRoute />}>
         <Route path="/restaurant/dashboard" element={<RestaurantDashboard />} />
+        <Route path="/restaurant/menu-items" element={<MenuItems />} />
       </Route>
 
       {/* Unknown URLs */}

@@ -382,6 +382,7 @@ const getCurrentAdmin = async (req, res) => {
           select: {
             id: true,
             name: true,
+            logoUrl: true,
           },
         },
       },
@@ -398,6 +399,7 @@ const getCurrentAdmin = async (req, res) => {
         id: admin.id,
         name: admin.name,
         email: admin.email,
+        logoUrl: admin.logoUrl,
         createdAt: admin.createdAt,
         restaurant: admin.restaurant,
       },
