@@ -373,12 +373,33 @@ const resendVerificationCode = async (req, res) => {
 
 const getCurrentAdmin = async (req, res) => {
   try {
+    const admin = await prisma.admin.findUnique({
+      where: {
+        id: req.user.id,
+      },
+      include: {
+        restaurant: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Restaurant admin not found.",
+      });
+    }
+
     res.status(200).json({
       admin: {
-        id: req.user.id,
-        name: req.user.name,
-        email: req.user.email,
-        createdAt: req.user.createdAt,
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
+        createdAt: admin.createdAt,
+        restaurant: admin.restaurant,
       },
     });
   } catch (error) {

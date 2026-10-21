@@ -6,6 +6,11 @@ import PlatformDashboard from "./pages/platformDashboard.jsx";
 import PlatformRestaurants from "./pages/PlatformRestaurants.jsx";
 import PlatformSettings from "./pages/PlatformSettings.jsx";
 import PlatformRestaurantDetails from "./pages/PlatformRestaurantDetails.jsx";
+import RestaurantAdminSignup from "./pages/RestaurantAdminSignup.jsx";
+import RestaurantAdminLogin from "./pages/RestaurantAdminLogin.jsx";
+import VerifyRestaurantEmail from "./pages/VerifyRestaurantEmail.jsx";
+import RestaurantProtectedRoute from "./components/RestaurantProtectedRoute.jsx";
+import RestaurantDashboard from "./pages/RestaurantDashboard.jsx";
 
 function App() {
   return (
@@ -19,19 +24,15 @@ function App() {
       />
 
       {/* Restaurant admin authentication */}
-      <Route
-        path="/restaurant/signup"
-        element={<div>Restaurant Admin Signup</div>}
-      />
-      <Route
-        path="/restaurant/login"
-        element={<div>Restaurant Admin Login</div>}
-      />
+      <Route path="/restaurant/signup" element={<RestaurantAdminSignup />} />
+
+      <Route path="/restaurant/login" element={<RestaurantAdminLogin />} />
+
       <Route
         path="/restaurant/verify-email"
-        element={<div>Restaurant Admin Email Verification</div>}
+        element={<VerifyRestaurantEmail />}
       />
-
+      {/* platform admin protected routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/platform/dashboard" element={<PlatformDashboard />} />
         <Route path="/platform/restaurants" element={<PlatformRestaurants />} />
@@ -40,6 +41,11 @@ function App() {
           path="/platform/restaurants/:id"
           element={<PlatformRestaurantDetails />}
         />
+      </Route>
+
+      {/* Restaurant admin protected routes */}
+      <Route element={<RestaurantProtectedRoute />}>
+        <Route path="/restaurant/dashboard" element={<RestaurantDashboard />} />
       </Route>
 
       {/* Unknown URLs */}
