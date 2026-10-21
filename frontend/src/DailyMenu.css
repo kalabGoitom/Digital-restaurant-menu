@@ -1,0 +1,289 @@
+.daily-menu-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #111827;
+}
+
+.daily-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.daily-menu-intro {
+  margin-bottom: 2rem;
+}
+
+.daily-menu-eyebrow {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.daily-menu-intro h1 {
+  margin: 0.5rem 0;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  letter-spacing: -0.04em;
+}
+
+.daily-menu-intro > p:not(.daily-menu-eyebrow) {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.daily-menu-date {
+  font-weight: 600;
+  color: #374151 !important;
+}
+
+.daily-menu-section {
+  margin: 2.5rem 0;
+}
+
+.daily-menu-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.daily-menu-section-heading h2,
+.daily-menu-empty h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.4rem;
+}
+
+.daily-menu-section-heading p,
+.daily-menu-empty p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.daily-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  gap: 1.25rem;
+}
+
+.daily-menu-card {
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgb(15 23 42 / 4%);
+}
+
+.daily-menu-card-image {
+  display: block;
+  width: 100%;
+  height: 175px;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+.daily-menu-image-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #6b7280;
+}
+
+.daily-menu-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+.daily-menu-category {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.daily-menu-card-content h3 {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.daily-menu-card-content p {
+  min-height: 2.5rem;
+  margin: 0 0 1rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.daily-menu-card-content strong {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.daily-menu-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 42px;
+  padding: 0.7rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.daily-menu-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.daily-menu-button-primary {
+  color: #fff;
+  background: #111827;
+}
+
+.daily-menu-button-primary:hover:not(:disabled) {
+  background: #374151;
+}
+
+.daily-menu-button-secondary {
+  color: #374151;
+  background: #fff;
+  border-color: #d1d5db;
+}
+
+.daily-menu-button-secondary:hover {
+  background: #f9fafb;
+}
+
+.daily-menu-button-danger {
+  width: 100%;
+  color: #b91c1c;
+  background: #fff;
+  border-color: #fecaca;
+}
+
+.daily-menu-button-danger:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.daily-menu-button-selected {
+  width: 100%;
+  color: #166534;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.daily-menu-card-content .daily-menu-button-primary {
+  width: 100%;
+}
+
+.daily-menu-empty,
+.daily-menu-state {
+  padding: 2rem;
+  border: 1px dashed #d1d5db;
+  border-radius: 14px;
+  background: #f9fafb;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.daily-menu-empty h2 {
+  color: #111827;
+}
+
+.daily-menu-empty p {
+  margin-bottom: 1.25rem;
+}
+
+.daily-menu-message {
+  margin: 1rem 0;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.daily-menu-message-error {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.daily-menu-message-success {
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.daily-menu-date-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  margin: 24px 0 12px;
+}
+
+.daily-menu-date-picker label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color, #253047);
+}
+
+.daily-menu-date-picker input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #d6dce5;
+  border-radius: 8px;
+  background: #fff;
+  color: #253047;
+  font: inherit;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.daily-menu-date-picker input:focus {
+  outline: 2px solid #6478d3;
+  outline-offset: 2px;
+  border-color: #6478d3;
+}
+
+@media (max-width: 600px) {
+  .daily-menu-date-picker {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .daily-menu-page {
+    padding: 1rem;
+  }
+
+  .daily-menu-header {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+
+  .daily-menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-menu-card-image {
+    height: 200px;
+  }
+}

@@ -1,0 +1,332 @@
+.public-menu-page {
+  --public-primary: #254b36;
+  --public-secondary: #f5f1e8;
+  --public-accent: #d49b42;
+
+  min-height: 100vh;
+  color: #252b26;
+  background: #fff;
+  font-family: inherit;
+}
+
+.public-menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3.5rem 1.5rem 3rem;
+  text-align: center;
+  background: var(--public-secondary);
+  border-bottom: 1px solid rgb(0 0 0 / 5%);
+}
+
+.public-menu-logo {
+  width: 88px;
+  height: 88px;
+  margin-bottom: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  border: 3px solid rgb(255 255 255 / 80%);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 8%);
+}
+
+.public-menu-kicker {
+  margin: 0 0 0.65rem;
+  color: var(--public-primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.public-menu-header h1 {
+  margin: 0;
+  color: var(--public-primary);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 5vw, 3.6rem);
+  font-weight: 600;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.public-menu-accent-line {
+  width: 56px;
+  height: 3px;
+  margin: 1.4rem 0 0.9rem;
+  border-radius: 3px;
+  background: var(--public-accent);
+}
+
+.public-menu-subtitle {
+  margin: 0;
+  color: #646b64;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.public-menu-content {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 4rem;
+}
+
+.public-menu-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.public-menu-section-heading h2 {
+  margin: 0;
+  color: var(--public-primary);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 600;
+}
+
+.public-menu-count {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  color: #525b53;
+  background: #fff;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.public-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.public-menu-card {
+  overflow: hidden;
+  border: 1px solid #e8e9e5;
+  border-radius: 14px;
+  background: #fff;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.public-menu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 7%);
+}
+
+.public-menu-dish-image,
+.public-menu-dish-placeholder {
+  display: flex;
+  width: 100%;
+  height: 215px;
+  object-fit: cover;
+}
+
+.public-menu-dish-placeholder {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  color: #667267;
+  background: var(--public-secondary);
+  font-size: 0.8rem;
+}
+
+.public-menu-dish-placeholder span:first-child {
+  font-size: 2.5rem;
+}
+
+.public-menu-dish-content {
+  padding: 1.15rem;
+}
+
+.public-menu-category {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  color: var(--public-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.public-menu-dish-title {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.public-menu-dish-title h3 {
+  margin: 0;
+  color: #252b26;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.public-menu-price {
+  flex-shrink: 0;
+  color: var(--public-primary);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.public-menu-description {
+  margin: 0.75rem 0 0;
+  color: #6b716b;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.public-menu-empty,
+.public-menu-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 230px;
+  padding: 2rem;
+  border: 1px dashed #d7ddd5;
+  border-radius: 14px;
+  background: #fafbf9;
+  text-align: center;
+}
+
+.public-menu-empty h3,
+.public-menu-state h1 {
+  margin: 0 0 0.6rem;
+  color: var(--public-primary);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+}
+
+.public-menu-empty p,
+.public-menu-state p {
+  max-width: 420px;
+  margin: 0;
+  color: #6b716b;
+  line-height: 1.7;
+}
+
+.public-menu-empty-icon {
+  margin-bottom: 0.8rem;
+  font-size: 2.3rem;
+}
+
+.public-menu-error {
+  min-height: 100vh;
+  padding: 2rem;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+}
+
+.public-menu-retry {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.2rem;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--public-primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.public-menu-spinner {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 1rem;
+  border: 3px solid #e5e7eb;
+  border-top-color: var(--public-primary);
+  border-radius: 50%;
+  animation: public-menu-spin 0.8s linear infinite;
+}
+
+@keyframes public-menu-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.public-menu-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.75rem 1rem;
+  border-top: 1px solid #eceee9;
+  text-align: center;
+}
+
+.public-menu-footer-mark {
+  color: var(--public-accent);
+  font-size: 1.3rem;
+}
+
+.public-menu-footer p {
+  margin: 0.5rem 0 0;
+  color: #737a73;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .public-menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .public-menu-dish-image,
+  .public-menu-dish-placeholder {
+    height: 190px;
+  }
+}
+
+@media (max-width: 600px) {
+  .public-menu-header {
+    padding: 2.5rem 1rem;
+  }
+
+  .public-menu-logo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .public-menu-content {
+    padding: 2.5rem 1rem 3rem;
+  }
+
+  .public-menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-menu-dish-image,
+  .public-menu-dish-placeholder {
+    height: 230px;
+  }
+
+  .public-menu-section-heading {
+    align-items: start;
+  }
+
+  .public-menu-dish-title {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-menu-card {
+    transition: none;
+  }
+
+  .public-menu-card:hover {
+    transform: none;
+  }
+
+  .public-menu-spinner {
+    animation-duration: 1.8s;
+  }
+}

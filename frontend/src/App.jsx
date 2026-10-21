@@ -12,6 +12,8 @@ import VerifyRestaurantEmail from "./pages/VerifyRestaurantEmail.jsx";
 import RestaurantProtectedRoute from "./components/RestaurantProtectedRoute.jsx";
 import RestaurantDashboard from "./pages/RestaurantDashboard.jsx";
 import MenuItems from "./pages/MenuItems.jsx";
+import DailyMenu from "./pages/DailyMenu.jsx";
+import PublicRestaurantMenu from "./pages/PublicRestaurantMenu.jsx";
 
 function App() {
   return (
@@ -48,7 +50,10 @@ function App() {
       <Route element={<RestaurantProtectedRoute />}>
         <Route path="/restaurant/dashboard" element={<RestaurantDashboard />} />
         <Route path="/restaurant/menu-items" element={<MenuItems />} />
+        <Route path="/restaurant/daily-menu" element={<DailyMenu />} />
       </Route>
+
+      <Route path="/menu/:slug" element={<PublicRestaurantMenu />} />
 
       {/* Unknown URLs */}
       <Route path="*" element={<Navigate to="/platform/login" replace />} />
