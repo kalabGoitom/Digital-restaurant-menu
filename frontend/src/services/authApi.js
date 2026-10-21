@@ -132,7 +132,7 @@ const logoutRestaurantAdmin = async () => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Logout failed.");
+    throw new Error(data.message || "Logout failed");
   }
 
   return data;
