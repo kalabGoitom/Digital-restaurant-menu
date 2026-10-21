@@ -104,20 +104,20 @@ const verifyRestaurantEmail = async (formData) => {
   return data;
 };
 
-const resendRestaurantVerificationCode = async (formData) => {
+const resendRestaurantVerificationCode = async (email) => {
   const response = await fetch(`${API_URL}/admin/resend-verification`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    body: JSON.stringify(formData),
+    body: JSON.stringify({ email }),
   });
 
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Could not resend the verification code.");
+    throw new Error(data.message || "Failed to resend verification code.");
   }
 
   return data;
@@ -162,4 +162,5 @@ export {
   getCurrentRestaurantAdmin,
   logoutRestaurantAdmin,
   verifyRestaurantEmail,
+  resendRestaurantVerificationCode,
 };

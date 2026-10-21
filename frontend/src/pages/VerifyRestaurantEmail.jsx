@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { verifyRestaurantEmail } from "../services/authApi.js";
+import {
+  verifyRestaurantEmail,
+  resendRestaurantVerificationCode,
+} from "../services/authApi.js";
 
 function VerifyRestaurantEmail() {
   const [searchParams] = useSearchParams();
@@ -12,6 +15,7 @@ function VerifyRestaurantEmail() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,6 +38,21 @@ function VerifyRestaurantEmail() {
       setError(error.message || "Email verification failed.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    setError("");
+    setMessage("");
+    setResending(true);
+
+    try {
+      const response = await resendRestaurantVerificationCode(email);
+      setMessage(response.message || "A new verification code has been sent.");
+    } catch (error) {
+      setError(error.message || "Failed to resend verification code.");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -75,10 +94,20 @@ function VerifyRestaurantEmail() {
 
           {message && <p role="status">{message}</p>}
 
-          <button type="submit" disabled={!email || loading}>
+          <button type="submit" disabled={!email || loading || resending}>
             {loading ? "Verifying..." : "Verify email"}
           </button>
         </form>
+
+        <p>Didn't receive the email? You can request a new code.</p>
+
+        <button
+          type="button"
+          onClick={handleResendCode}
+          disabled={!email || resending || loading}
+        >
+          {resending ? "Sending code..." : "Resend verification code"}
+        </button>
 
         <p>
           Need to start again?{" "}
