@@ -166,3 +166,31 @@
     font-size: 25px;
   }
 }
+
+.settings-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 10px 14px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.settings-back-button:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.settings-back-button:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 3px;
+}

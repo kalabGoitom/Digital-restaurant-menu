@@ -330,3 +330,115 @@
     animation-duration: 1.8s;
   }
 }
+
+/* Search and category filters */
+
+.public-menu-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.75rem;
+}
+
+.public-menu-search-label {
+  color: var(--public-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.public-menu-search {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.85rem 1rem;
+  border: 1px solid #dfe4dc;
+  border-radius: 10px;
+  background: #fff;
+  color: #252b26;
+  font: inherit;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.public-menu-search::placeholder {
+  color: #929990;
+}
+
+.public-menu-search:focus {
+  outline: none;
+  border-color: var(--public-primary);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--public-primary) 14%, transparent);
+}
+
+.public-menu-category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.public-menu-filter-button {
+  padding: 0.65rem 1rem;
+  border: 1px solid #e1e5dd;
+  border-radius: 999px;
+  background: #fff;
+  color: #515a51;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.public-menu-filter-button:hover {
+  border-color: var(--public-primary);
+  color: var(--public-primary);
+}
+
+.public-menu-filter-button.is-active {
+  border-color: var(--public-primary);
+  background: var(--public-primary);
+  color: #fff;
+}
+
+.public-menu-filter-button:focus-visible,
+.public-menu-reset-filters:focus-visible {
+  outline: 3px solid var(--public-accent);
+  outline-offset: 3px;
+}
+
+.public-menu-reset-filters {
+  margin-top: 1.2rem;
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--public-primary);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.public-menu-reset-filters:hover {
+  opacity: 0.9;
+}
+
+.public-menu-no-results {
+  border-style: solid;
+}
+
+@media (max-width: 600px) {
+  .public-menu-category-filters {
+    gap: 0.5rem;
+  }
+
+  .public-menu-filter-button {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.8rem;
+  }
+}

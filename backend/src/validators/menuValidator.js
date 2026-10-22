@@ -26,6 +26,7 @@ const menuSchema = z.object({
 
 const updateMenuSchema = menuSchema.partial().extend({
   available: z.boolean().optional(),
+  featured: z.boolean().optional(),
 });
 
 export { menuSchema, updateMenuSchema };

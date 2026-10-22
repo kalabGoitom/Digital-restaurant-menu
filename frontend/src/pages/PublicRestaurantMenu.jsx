@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   getPublicRestaurant,
@@ -13,6 +13,8 @@ function PublicRestaurantMenu() {
   const [dailyMenu, setDailyMenu] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     let cancelled = false;
@@ -58,6 +60,31 @@ function PublicRestaurantMenu() {
   const dishes = (dailyMenu?.items || []).filter(
     (item) => item.menu?.available !== false,
   );
+
+  const categories = useMemo(() => {
+    return [
+      "All",
+      ...new Set(
+        dishes.map((item) => item.menu?.category?.trim()).filter(Boolean),
+      ),
+    ];
+  }, [dailyMenu]);
+
+  const filteredDishes = dishes.filter(({ menu }) => {
+    if (!menu) return false;
+
+    const query = searchTerm.trim().toLowerCase();
+
+    const matchesSearch =
+      !query ||
+      menu.name?.toLowerCase().includes(query) ||
+      menu.description?.toLowerCase().includes(query);
+
+    const matchesCategory =
+      selectedCategory === "All" || menu.category?.trim() === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <main className="public-menu-page" style={theme}>
@@ -108,7 +135,8 @@ function PublicRestaurantMenu() {
 
               {dailyMenu && (
                 <span className="public-menu-count">
-                  {dishes.length} {dishes.length === 1 ? "dish" : "dishes"}
+                  {filteredDishes.length} of {dishes.length}{" "}
+                  {dishes.length === 1 ? "dish" : "dishes"}
                 </span>
               )}
             </div>
@@ -129,46 +157,104 @@ function PublicRestaurantMenu() {
                 <p>Please check back later for today's selections.</p>
               </div>
             ) : (
-              <div className="public-menu-grid">
-                {dishes.map(({ id, menu }) => (
-                  <article className="public-menu-card" key={id}>
-                    {menu.imageUrl ? (
-                      <img
-                        className="public-menu-dish-image"
-                        src={menu.imageUrl}
-                        alt={menu.name}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="public-menu-dish-placeholder">
-                        <span aria-hidden="true">🍲</span>
-                        <span>Made fresh for you</span>
-                      </div>
-                    )}
+              <>
+                <div className="public-menu-filters">
+                  <label
+                    className="public-menu-search-label"
+                    htmlFor="public-menu-search"
+                  >
+                    Search the menu
+                  </label>
 
-                    <div className="public-menu-dish-content">
-                      {menu.category && (
-                        <span className="public-menu-category">
-                          {menu.category}
-                        </span>
-                      )}
+                  <input
+                    id="public-menu-search"
+                    className="public-menu-search"
+                    type="search"
+                    placeholder="Search dishes or descriptions..."
+                    value={searchTerm}
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                  />
 
-                      <div className="public-menu-dish-title">
-                        <h3>{menu.name}</h3>
-                        <span className="public-menu-price">
-                          {Number(menu.price).toLocaleString()} ETB
-                        </span>
-                      </div>
+                  <div
+                    className="public-menu-category-filters"
+                    aria-label="Filter dishes by category"
+                  >
+                    {categories.map((category) => (
+                      <button
+                        key={category}
+                        type="button"
+                        className={`public-menu-filter-button ${
+                          selectedCategory === category ? "is-active" : ""
+                        }`}
+                        aria-pressed={selectedCategory === category}
+                        onClick={() => setSelectedCategory(category)}
+                      >
+                        {category === "All" ? "All dishes" : category}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-                      {menu.description && (
-                        <p className="public-menu-description">
-                          {menu.description}
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
+                {filteredDishes.length === 0 ? (
+                  <div className="public-menu-empty public-menu-no-results">
+                    <h3>No matching dishes</h3>
+                    <p>
+                      Try another search term or choose a different category.
+                    </p>
+                    <button
+                      type="button"
+                      className="public-menu-reset-filters"
+                      onClick={() => {
+                        setSearchTerm("");
+                        setSelectedCategory("All");
+                      }}
+                    >
+                      Clear filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="public-menu-grid">
+                    {filteredDishes.map(({ id, menu }) => (
+                      <article className="public-menu-card" key={id}>
+                        {menu.imageUrl ? (
+                          <img
+                            className="public-menu-dish-image"
+                            src={menu.imageUrl}
+                            alt={menu.name}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="public-menu-dish-placeholder">
+                            <span aria-hidden="true">🍲</span>
+                            <span>Made fresh for you</span>
+                          </div>
+                        )}
+
+                        <div className="public-menu-dish-content">
+                          {menu.category && (
+                            <span className="public-menu-category">
+                              {menu.category}
+                            </span>
+                          )}
+
+                          <div className="public-menu-dish-title">
+                            <h3>{menu.name}</h3>
+                            <span className="public-menu-price">
+                              {Number(menu.price).toLocaleString()} ETB
+                            </span>
+                          </div>
+
+                          {menu.description && (
+                            <p className="public-menu-description">
+                              {menu.description}
+                            </p>
+                          )}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </section>
 

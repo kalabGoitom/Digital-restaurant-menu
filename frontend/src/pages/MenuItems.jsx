@@ -21,6 +21,7 @@ function MenuItems() {
   const [submitting, setSubmitting] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [updatingFeaturedId, setUpdatingFeaturedId] = useState(null);
 
   const navigate = useNavigate();
 
@@ -131,6 +132,34 @@ function MenuItems() {
     }
   };
 
+  const handleToggleFeatured = async (item) => {
+    setError("");
+    setMessage("");
+    setUpdatingFeaturedId(item.id);
+
+    try {
+      const featured = !item.featured;
+
+      await updateMenuItem(item.id, { featured });
+
+      setMenuItems((previousItems) =>
+        previousItems.map((menuItem) =>
+          menuItem.id === item.id ? { ...menuItem, featured } : menuItem,
+        ),
+      );
+
+      setMessage(
+        featured
+          ? `${item.name} is now a featured dish.`
+          : `${item.name} is no longer featured.`,
+      );
+    } catch (error) {
+      setError(error.message || "Failed to update featured status.");
+    } finally {
+      setUpdatingFeaturedId(null);
+    }
+  };
+
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
@@ -149,6 +178,7 @@ function MenuItems() {
       <header className="menu-management-header">
         <div>
           <RestaurantBranding restaurant={restaurant} />
+
           <button
             type="button"
             className="menu-back-button"
@@ -243,7 +273,14 @@ function MenuItems() {
               )}
 
               <div className="menu-item-content">
-                <h2>{item.name}</h2>
+                <div className="menu-item-title-row">
+                  <h2>{item.name}</h2>
+
+                  {item.featured && (
+                    <span className="menu-featured-badge">★ Featured</span>
+                  )}
+                </div>
+
                 <p className="menu-item-description">{item.description}</p>
 
                 <div className="menu-item-meta">
@@ -264,6 +301,27 @@ function MenuItems() {
                 </span>
 
                 <div className="menu-item-actions">
+                  <button
+                    type="button"
+                    className={`menu-featured-button ${
+                      item.featured ? "is-featured" : ""
+                    }`}
+                    onClick={() => handleToggleFeatured(item)}
+                    disabled={updatingFeaturedId === item.id}
+                    aria-pressed={Boolean(item.featured)}
+                    title={
+                      item.featured
+                        ? "Remove from featured dishes"
+                        : "Mark as featured"
+                    }
+                  >
+                    {updatingFeaturedId === item.id
+                      ? "Updating..."
+                      : item.featured
+                        ? "★ Featured"
+                        : "☆ Feature dish"}
+                  </button>
+
                   <button
                     type="button"
                     className="menu-button menu-button-secondary"

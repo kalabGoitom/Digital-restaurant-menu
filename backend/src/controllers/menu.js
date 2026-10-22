@@ -58,8 +58,15 @@ const editMenu = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { name, description, price, imageUrl, category, available } =
-      req.body;
+    const {
+      name,
+      description,
+      price,
+      imageUrl,
+      category,
+      available,
+      featured,
+    } = req.body;
 
     const updatedItem = await prisma.menu.updateMany({
       where: {
@@ -69,10 +76,11 @@ const editMenu = async (req, res) => {
       data: {
         name,
         description,
-        price: price ? parseFloat(price) : undefined,
+        price: price !== undefined ? parseFloat(price) : undefined,
         imageUrl,
         category,
         available,
+        featured,
       },
     });
 

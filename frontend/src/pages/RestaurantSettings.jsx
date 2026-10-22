@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getRestaurantSettings,
   updateRestaurantSettings,
 } from "../services/restaurantSettingsApi";
 import "../RestaurantDashboard.css";
+import "../RestaurantSettings.css";
 
 function RestaurantSettings() {
   const [settings, setSettings] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -39,7 +42,23 @@ function RestaurantSettings() {
     setError("");
 
     try {
-      const updatedRestaurant = await updateRestaurantSettings(settings);
+      const {
+        name,
+        logoUrl,
+        primaryColor,
+        secondaryColor,
+        accentColor,
+        defaultLanguage,
+      } = settings;
+
+      const updatedRestaurant = await updateRestaurantSettings({
+        name,
+        logoUrl: logoUrl || null,
+        primaryColor: primaryColor || null,
+        secondaryColor: secondaryColor || null,
+        accentColor: accentColor || null,
+        defaultLanguage,
+      });
       setSettings(updatedRestaurant);
       alert("Restaurant settings saved successfully.");
     } catch (err) {
@@ -64,6 +83,14 @@ function RestaurantSettings() {
   return (
     <main className="restaurant-settings">
       <header className="settings-header">
+        <button
+          type="button"
+          className="settings-back-button"
+          onClick={() => navigate("/restaurant/dashboard")}
+        >
+          ← Back to Dashboard
+        </button>
+
         <div>
           <p className="settings-eyebrow">RESTAURANT MANAGEMENT</p>
           <h1>Restaurant Settings</h1>

@@ -1,7 +1,7 @@
-const API_URL = "/api/admin/settings";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const getRestaurantSettings = async () => {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/admin/settings`, {
     method: "GET",
     credentials: "include",
   });
@@ -16,7 +16,7 @@ export const getRestaurantSettings = async () => {
 };
 
 export const updateRestaurantSettings = async (settings) => {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/admin/settings`, {
     method: "PATCH",
     credentials: "include",
     headers: {
