@@ -273,10 +273,53 @@ const getUpcomingDailyMenus = async (req, res) => {
   }
 };
 
+const getPastDailyMenus = async (req, res) => {
+  try {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    const dailyMenus = await prisma.dailyMenu.findMany({
+      where: {
+        restaurantId: req.restaurantId,
+        date: {
+          lt: today,
+        },
+      },
+      orderBy: {
+        date: "desc",
+      },
+      include: {
+        items: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    const pastMenus = dailyMenus.map((dailyMenu) => ({
+      id: dailyMenu.id,
+      date: dailyMenu.date,
+      dishCount: dailyMenu.items.length,
+    }));
+
+    return res.status(200).json({
+      dailyMenus: pastMenus,
+    });
+  } catch (error) {
+    console.error("Failed to fetch past daily menus:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch past daily menus.",
+    });
+  }
+};
+
 export {
   createDailyMenu,
   addToDailyMenuItem,
   removeFromDailyMenu,
   getDailyMenu,
   getUpcomingDailyMenus,
+  getPastDailyMenus,
 };

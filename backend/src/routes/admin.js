@@ -12,6 +12,7 @@ import {
   removeFromDailyMenu,
   getDailyMenu,
   getUpcomingDailyMenus,
+  getPastDailyMenus,
 } from "../controllers/dailyMenu.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 
@@ -47,5 +48,6 @@ router.delete("/daily-menu/items/:id", removeFromDailyMenu);
 
 router.get("/daily-menu", validateQuery(dailyMenuSchema), getDailyMenu);
 router.get("/daily-menu/upcoming", getUpcomingDailyMenus);
+router.get("/daily-menu/past", getPastDailyMenus);
 
 export default router;

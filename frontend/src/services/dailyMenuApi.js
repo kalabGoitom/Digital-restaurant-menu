@@ -97,3 +97,18 @@ export const getUpcomingDailyMenus = async () => {
 
   return data.dailyMenus;
 };
+
+export const getPastDailyMenus = async () => {
+  const response = await fetch(`${API_URL}/admin/daily-menu/past`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch past menus.");
+  }
+
+  return data.dailyMenus;
+};

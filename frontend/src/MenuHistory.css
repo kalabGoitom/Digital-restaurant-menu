@@ -1,0 +1,111 @@
+.menu-history {
+  width: 100%;
+  margin-top: 28px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+
+.menu-history__header {
+  margin-bottom: 20px;
+}
+
+.menu-history__header h2 {
+  margin: 0 0 6px;
+  color: #222222;
+  font-size: 1.25rem;
+}
+
+.menu-history__header p {
+  margin: 0;
+  color: #777777;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.menu-history__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-history__item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  background: #fafafa;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.menu-history__item:hover {
+  background: #f3f5f4;
+  border-color: #d5ddd8;
+}
+
+.menu-history__date {
+  flex: 1;
+  color: #252525;
+  font-weight: 600;
+}
+
+.menu-history__count {
+  color: #666666;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.menu-history__action {
+  color: #3156a6;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.menu-history__message {
+  margin: 0;
+  padding: 18px 0;
+  color: #777777;
+  line-height: 1.5;
+}
+
+.menu-history__error {
+  margin: 0;
+  color: #b42318;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .menu-history {
+    padding: 18px;
+  }
+
+  .menu-history__item {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .menu-history__date {
+    flex-basis: 60%;
+    font-size: 0.9rem;
+  }
+
+  .menu-history__count,
+  .menu-history__action {
+    font-size: 0.8rem;
+  }
+
+  .menu-history__action {
+    margin-left: auto;
+  }
+}
