@@ -5,6 +5,7 @@ import {
   getCurrentRestaurantAdmin,
 } from "../services/authApi.js";
 import RestaurantBranding from "../components/RestaurantBranding.jsx";
+import UpcomingMenus from "../components/UpcomingMenus.jsx";
 import "../RestaurantDashboard.css";
 
 function RestaurantDashboard() {
@@ -87,6 +88,7 @@ function RestaurantDashboard() {
           </button>
         </article>
       </section>
+      <UpcomingMenus />
     </main>
   );
 }

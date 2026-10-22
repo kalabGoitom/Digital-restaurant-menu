@@ -93,6 +93,9 @@
   background: #9ca3af;
   cursor: not-allowed;
 }
+.restaurant-dashboard > .upcoming-menus {
+  margin-top: 28px;
+}
 
 @media (max-width: 800px) {
   .dashboard-sections {

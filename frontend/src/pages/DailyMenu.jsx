@@ -9,8 +9,6 @@ import {
 import { getMenuItems } from "../services/menuApi.js";
 import { getCurrentRestaurantAdmin } from "../services/authApi.js";
 import RestaurantBranding from "../components/RestaurantBranding.jsx";
-import UpcomingMenus from "../components/UpcomingMenus.jsx";
-
 import "../DailyMenu.css";
 
 function getLocalDateString() {
@@ -180,8 +178,6 @@ function DailyMenu() {
           })}
         </p>
       </section>
-
-      <UpcomingMenus />
 
       {error && (
         <div
