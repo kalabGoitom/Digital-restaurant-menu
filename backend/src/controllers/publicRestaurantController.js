@@ -121,6 +121,7 @@ const getPublicDailyMenu = async (req, res) => {
                 imageUrl: true,
                 category: true,
                 available: true,
+                featured: true,
               },
             },
           },
