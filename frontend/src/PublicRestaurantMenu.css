@@ -442,3 +442,79 @@
     font-size: 0.8rem;
   }
 }
+
+/* Featured dishes section */
+.public-menu-featured {
+  margin-bottom: 3rem;
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--public-accent) 38%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--public-secondary) 75%, white);
+}
+
+.public-menu-featured-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.public-menu-featured-star {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--public-accent);
+  color: white;
+  font-size: 1.4rem;
+}
+
+.public-menu-featured-heading h2 {
+  margin: 0.2rem 0 0.4rem;
+  color: var(--public-primary);
+}
+
+.public-menu-featured-heading p:last-child {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.public-menu-featured-card {
+  border-color: color-mix(in srgb, var(--public-accent) 45%, transparent);
+}
+
+.public-menu-featured-label {
+  display: inline-flex;
+  align-self: flex-start;
+  width: fit-content;
+  margin-bottom: 0.65rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--public-accent) 20%, white);
+  color: var(--public-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.public-menu-featured-grid {
+  margin-top: 0;
+}
+
+@media (max-width: 600px) {
+  .public-menu-featured {
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .public-menu-featured-heading {
+    gap: 0.65rem;
+  }
+
+  .public-menu-featured-star {
+    flex-basis: 36px;
+    width: 36px;
+    height: 36px;
+  }
+}

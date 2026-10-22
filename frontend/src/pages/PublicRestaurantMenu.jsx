@@ -86,6 +86,10 @@ function PublicRestaurantMenu() {
     return matchesSearch && matchesCategory;
   });
 
+  const featuredDishes = filteredDishes.filter(
+    ({ menu }) => menu?.featured === true,
+  );
+
   return (
     <main className="public-menu-page" style={theme}>
       {isLoading ? (
@@ -194,6 +198,74 @@ function PublicRestaurantMenu() {
                     ))}
                   </div>
                 </div>
+
+                {featuredDishes.length > 0 && (
+                  <section className="public-menu-featured">
+                    <div className="public-menu-featured-heading">
+                      <span
+                        className="public-menu-featured-star"
+                        aria-hidden="true"
+                      >
+                        ★
+                      </span>
+                      <div>
+                        <p className="public-menu-kicker">
+                          RESTAURANT FAVORITES
+                        </p>
+                        <h2>Featured Dishes</h2>
+                        <p>Discover our specially selected dishes.</p>
+                      </div>
+                    </div>
+
+                    <div className="public-menu-grid public-menu-featured-grid">
+                      {featuredDishes.map(({ id, menu }) => (
+                        <article
+                          className="public-menu-card public-menu-featured-card"
+                          key={id}
+                        >
+                          {menu.imageUrl ? (
+                            <img
+                              className="public-menu-dish-image"
+                              src={menu.imageUrl}
+                              alt={menu.name}
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="public-menu-dish-placeholder">
+                              <span aria-hidden="true">🍲</span>
+                              <span>Made fresh for you</span>
+                            </div>
+                          )}
+
+                          <div className="public-menu-dish-content">
+                            <span className="public-menu-featured-label">
+                              ★ Featured
+                            </span>
+
+                            {menu.category && (
+                              <span className="public-menu-category">
+                                {menu.category}
+                              </span>
+                            )}
+
+                            <div className="public-menu-dish-title">
+                              <h3>{menu.name}</h3>
+                              <span className="public-menu-price">
+                                {Number(menu.price).toLocaleString()} ETB
+                              </span>
+                            </div>
+
+                            {menu.description && (
+                              <p className="public-menu-description">
+                                {menu.description}
+                              </p>
+                            )}
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                )}
 
                 {filteredDishes.length === 0 ? (
                   <div className="public-menu-empty public-menu-no-results">
