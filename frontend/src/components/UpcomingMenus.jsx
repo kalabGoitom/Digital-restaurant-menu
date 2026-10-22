@@ -29,6 +29,15 @@ function UpcomingMenus() {
     navigate(`/restaurant/daily-menu?date=${date}`);
   };
 
+  const getLocalDateString = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-ET", {
       weekday: "short",
@@ -37,6 +46,8 @@ function UpcomingMenus() {
       year: "numeric",
     });
   };
+
+  const today = getLocalDateString();
 
   return (
     <section className="upcoming-menus">
@@ -64,26 +75,41 @@ function UpcomingMenus() {
         </p>
       ) : (
         <div className="upcoming-menus__list">
-          {menus.map((menu) => (
-            <button
-              className="upcoming-menus__item"
-              type="button"
-              key={menu.id}
-              onClick={() => openMenu(menu.date.slice(0, 10))}
-            >
-              <span className="upcoming-menus__date">
-                {formatDate(menu.date)}
-              </span>
+          {menus.map((menu) => {
+            const menuDate = menu.date.slice(0, 10);
+            const isToday = menuDate === today;
 
-              <span className="upcoming-menus__count">
-                {menu.dishCount} {menu.dishCount === 1 ? "dish" : "dishes"}
-              </span>
+            return (
+              <button
+                className="upcoming-menus__item"
+                type="button"
+                key={menu.id}
+                onClick={() => openMenu(menuDate)}
+              >
+                <span className="upcoming-menus__date">
+                  {formatDate(menu.date)}
+                </span>
 
-              <span className="upcoming-menus__arrow" aria-hidden="true">
-                →
-              </span>
-            </button>
-          ))}
+                <span
+                  className={`upcoming-menus__status ${
+                    isToday
+                      ? "upcoming-menus__status--today"
+                      : "upcoming-menus__status--upcoming"
+                  }`}
+                >
+                  {isToday ? "Today" : "Upcoming"}
+                </span>
+
+                <span className="upcoming-menus__count">
+                  {menu.dishCount} {menu.dishCount === 1 ? "dish" : "dishes"}
+                </span>
+
+                <span className="upcoming-menus__arrow" aria-hidden="true">
+                  →
+                </span>
+              </button>
+            );
+          })}
         </div>
       )}
     </section>

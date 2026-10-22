@@ -98,6 +98,24 @@
   line-height: 1.5;
 }
 
+.upcoming-menus__status {
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.upcoming-menus__status--today {
+  background: #e5f5eb;
+  color: #216e43;
+}
+
+.upcoming-menus__status--upcoming {
+  background: #eaf0ff;
+  color: #3156a6;
+}
+
 @media (max-width: 520px) {
   .upcoming-menus {
     padding: 18px;
