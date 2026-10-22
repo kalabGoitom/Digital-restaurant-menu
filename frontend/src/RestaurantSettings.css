@@ -1,0 +1,168 @@
+.restaurant-settings {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px;
+  color: #172033;
+}
+
+.settings-header {
+  margin-bottom: 28px;
+}
+
+.settings-eyebrow {
+  margin: 0 0 8px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.settings-header h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+}
+
+.settings-header > div > p:last-child {
+  margin: 0;
+  color: #64748b;
+}
+
+.settings-card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgb(15 23 42 / 5%);
+}
+
+.settings-card h2 {
+  margin: 12px 0 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 18px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-field label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.settings-field input:not([type="color"]),
+.settings-field select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: #172033;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.settings-field input:focus,
+.settings-field select:focus {
+  outline: 2px solid #bfdbfe;
+  border-color: #2563eb;
+}
+
+.settings-field input[readonly] {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.settings-field small {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.settings-logo-preview img {
+  display: block;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.settings-color-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-color-input input[type="color"] {
+  width: 48px;
+  height: 40px;
+  padding: 3px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.settings-color-input span {
+  color: #475569;
+  font-family: monospace;
+}
+
+.settings-clear-color {
+  margin-left: auto;
+  padding: 7px 12px;
+  color: #475569;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.settings-save-button {
+  min-height: 46px;
+  margin-top: 12px;
+  padding: 12px 18px;
+  color: #ffffff;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.settings-save-button:hover {
+  background: #1d4ed8;
+}
+
+.settings-error {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .restaurant-settings {
+    padding: 20px 14px;
+  }
+
+  .settings-card {
+    padding: 20px 16px;
+  }
+
+  .settings-header h1 {
+    font-size: 25px;
+  }
+}

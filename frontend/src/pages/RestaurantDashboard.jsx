@@ -82,10 +82,9 @@ function RestaurantDashboard() {
           <p>View and manage your restaurant information.</p>
           <button
             type="button"
-            disabled
-            title="Restaurant settings are not implemented yet"
+            onClick={() => navigate("/restaurant/settings")}
           >
-            Coming soon
+            Manage Settings
           </button>
         </article>
       </section>

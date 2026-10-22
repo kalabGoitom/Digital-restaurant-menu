@@ -26,6 +26,13 @@ import {
 import validateRequest from "../middlewares/validateRequest.js";
 import validateQuery from "../middlewares/validateQuery.js";
 
+import {
+  getRestaurantSettings,
+  updateRestaurantSettings,
+} from "../controllers/restaurantSettings.js";
+
+import restaurantSettingsSchema from "../validators/restaurantSettingsValidator.js";
+
 const router = express.Router();
 
 router.use(authMiddleware);
@@ -49,5 +56,14 @@ router.delete("/daily-menu/items/:id", removeFromDailyMenu);
 router.get("/daily-menu", validateQuery(dailyMenuSchema), getDailyMenu);
 router.get("/daily-menu/upcoming", getUpcomingDailyMenus);
 router.get("/daily-menu/past", getPastDailyMenus);
+
+// Restaurant settings routes
+router.get("/settings", getRestaurantSettings);
+
+router.patch(
+  "/settings",
+  validateRequest(restaurantSettingsSchema),
+  updateRestaurantSettings,
+);
 
 export default router;
