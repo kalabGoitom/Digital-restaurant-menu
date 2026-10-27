@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { uploadImage } from "../services/menuApi.js";
 
 const initialFormData = {
   name: "",
@@ -16,6 +17,11 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
     imageUrl: initialData?.imageUrl || "",
   }));
 
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [uploadSuccess, setUploadSuccess] = useState("");
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -23,6 +29,45 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
       ...previousData,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files?.[0];
+
+    setSelectedImage(file || null);
+    setUploadError("");
+    setUploadSuccess("");
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedImage) {
+      setUploadError("Please select an image first.");
+      return;
+    }
+
+    setUploading(true);
+    setUploadError("");
+    setUploadSuccess("");
+
+    try {
+      const result = await uploadImage(selectedImage, "dish");
+
+      setFormData((previousData) => ({
+        ...previousData,
+        imageUrl: result.url,
+      }));
+
+      setSelectedImage(null);
+      setUploadSuccess("Image uploaded successfully.");
+
+      // Clear the file input after a successful upload.
+      const fileInput = document.getElementById("dishImage");
+      if (fileInput) fileInput.value = "";
+    } catch (error) {
+      setUploadError(error.message || "Failed to upload image.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = (event) => {
@@ -90,6 +135,52 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
       </div>
 
       <div className="menu-form-field menu-form-field-full">
+        <label htmlFor="dishImage">Dish image</label>
+
+        <input
+          id="dishImage"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handleImageChange}
+          disabled={uploading || submitting}
+        />
+
+        <p className="menu-image-help">
+          Choose a JPEG, PNG, or WebP image up to 5 MB.
+        </p>
+
+        {selectedImage && (
+          <p className="menu-image-filename">Selected: {selectedImage.name}</p>
+        )}
+
+        <button
+          type="button"
+          className="menu-button menu-button-secondary menu-upload-button"
+          onClick={handleImageUpload}
+          disabled={!selectedImage || uploading || submitting}
+        >
+          {uploading ? "Uploading image..." : "Upload image"}
+        </button>
+
+        {uploadError && (
+          <p className="menu-upload-message menu-upload-error" role="alert">
+            {uploadError}
+          </p>
+        )}
+
+        {uploadSuccess && (
+          <p className="menu-upload-message menu-upload-success" role="status">
+            {uploadSuccess}
+          </p>
+        )}
+
+        {formData.imageUrl && (
+          <div className="menu-image-preview">
+            <img src={formData.imageUrl} alt="Menu item preview" />
+            <span>Image ready to save</span>
+          </div>
+        )}
+
         <label htmlFor="imageUrl">Image URL (optional)</label>
         <input
           id="imageUrl"
@@ -97,7 +188,7 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
           type="url"
           value={formData.imageUrl}
           onChange={handleChange}
-          placeholder="https://example.com/food.jpg"
+          placeholder="Upload an image or paste an image URL"
         />
       </div>
 
@@ -105,7 +196,7 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
         <button
           type="submit"
           className="menu-button menu-button-primary"
-          disabled={submitting}
+          disabled={submitting || uploading}
         >
           {submitting
             ? "Saving..."
@@ -119,7 +210,7 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
             type="button"
             className="menu-button menu-button-secondary"
             onClick={onCancel}
-            disabled={submitting}
+            disabled={submitting || uploading}
           >
             Cancel
           </button>

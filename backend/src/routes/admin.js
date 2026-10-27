@@ -33,9 +33,28 @@ import {
 
 import restaurantSettingsSchema from "../validators/restaurantSettingsValidator.js";
 
+import upload from "../middlewares/uploadMiddleware.js";
+import uploadRestaurantImage from "../controllers/imageUpload.js";
+import uploadErrorHandler from "../middlewares/uploadErrorHandler.js";
+
 const router = express.Router();
 
 router.use(authMiddleware);
+
+// Image upload route
+router.post(
+  "/upload-image",
+  (req, res, next) => {
+    upload.single("image")(req, res, (err) => {
+      if (err) {
+        return uploadErrorHandler(err, req, res, next);
+      }
+
+      next();
+    });
+  },
+  uploadRestaurantImage,
+);
 
 // Menu routes
 router.get("/menu-items", getAllMenu);

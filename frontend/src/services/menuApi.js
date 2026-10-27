@@ -71,3 +71,25 @@ export const deleteMenuItem = async (id) => {
 
   return data;
 };
+
+// Upload a menu item or restaurant image
+export const uploadImage = async (imageFile, type = "dish") => {
+  const formData = new FormData();
+
+  formData.append("image", imageFile);
+  formData.append("type", type);
+
+  const response = await fetch(`${API_URL}/admin/upload-image`, {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to upload image.");
+  }
+
+  return data;
+};
