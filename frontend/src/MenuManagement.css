@@ -593,3 +593,7 @@
   border-radius: 8px;
   background: #fff;
 }
+
+.menu-form-card {
+  scroll-margin-top: 24px;
+}

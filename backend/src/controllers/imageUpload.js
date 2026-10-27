@@ -26,7 +26,7 @@ const uploadRestaurantImage = async (req, res) => {
       publicId: result.publicId,
     });
   } catch (error) {
-    console.error("Image upload failed:", error.message);
+    console.error("Image upload failed:", error);
 
     return res.status(500).json({
       message: "Failed to upload image.",

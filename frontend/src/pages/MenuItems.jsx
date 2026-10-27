@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentRestaurantAdmin } from "../services/authApi.js";
 import RestaurantBranding from "../components/RestaurantBranding.jsx";
@@ -24,6 +24,17 @@ function MenuItems() {
   const [updatingFeaturedId, setUpdatingFeaturedId] = useState(null);
 
   const navigate = useNavigate();
+
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    if (showForm) {
+      formRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [showForm, editingItem]);
 
   const fetchMenuItems = async () => {
     setError("");
@@ -220,7 +231,7 @@ function MenuItems() {
       )}
 
       {showForm && (
-        <section className="menu-form-card">
+        <section ref={formRef} className="menu-form-card">
           <MenuItemForm
             key={editingItem?.id || "new-menu-item"}
             initialData={editingItem}
