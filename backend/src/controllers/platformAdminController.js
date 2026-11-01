@@ -789,6 +789,50 @@ const getPlatformDashboardStats = async (req, res) => {
   }
 };
 
+const updatePlatformAdminProfile = async (req, res) => {
+  try {
+    const admin = await prisma.platformAdmin.update({
+      where: {
+        id: req.platformAdmin.id,
+      },
+      data: {
+        name: req.body.name,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        emailVerified: true,
+        createdAt: true,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Profile updated successfully.",
+      admin,
+    });
+  } catch (error) {
+    console.error("Update platform admin profile error:", error);
+
+    return res.status(500).json({
+      message: "Failed to update platform admin profile.",
+    });
+  }
+};
+
+const platformAdminLogout = (req, res) => {
+  res.cookie("platformToken", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    expires: new Date(0),
+  });
+
+  return res.status(200).json({
+    message: "Platform admin logged out successfully.",
+  });
+};
+
 export {
   platformAdminSignup,
   platformAdminLogin,
@@ -805,4 +849,6 @@ export {
   reactivateRestaurant,
   getCurrentPlatformAdmin,
   getPlatformDashboardStats,
+  updatePlatformAdminProfile,
+  platformAdminLogout,
 };

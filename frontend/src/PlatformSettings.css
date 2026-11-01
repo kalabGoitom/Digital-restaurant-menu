@@ -1,0 +1,162 @@
+.platform-settings {
+  padding: 32px;
+  width: 100%;
+}
+
+.settings-heading {
+  margin-bottom: 30px;
+}
+
+.settings-heading h1 {
+  font-size: 28px;
+  margin: 0 0 8px;
+  color: #202b25;
+}
+
+.settings-heading p {
+  color: #737d76;
+  margin: 0;
+  font-size: 14px;
+}
+
+.settings-section {
+  background: #ffffff;
+  border: 1px solid #e5e9e6;
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 700px;
+}
+
+.settings-section-heading {
+  margin-bottom: 25px;
+}
+
+.settings-section-heading h2 {
+  font-size: 19px;
+  color: #202b25;
+  margin: 0 0 7px;
+}
+
+.settings-section-heading p {
+  color: #737d76;
+  font-size: 13px;
+  margin: 0;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #344139;
+}
+
+.settings-field input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #dce2dd;
+  border-radius: 7px;
+  outline: none;
+  font-size: 14px;
+  color: #26332b;
+  box-sizing: border-box;
+}
+
+.settings-field input:focus {
+  border-color: #254b36;
+  box-shadow: 0 0 0 3px rgba(37, 75, 54, 0.08);
+}
+
+.settings-field input[readonly] {
+  background: #f4f6f4;
+  color: #778078;
+  cursor: not-allowed;
+}
+
+.settings-field small {
+  color: #818a83;
+  font-size: 12px;
+}
+
+.settings-save-button {
+  align-self: flex-start;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 7px;
+  background: #254b36;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.settings-save-button:hover {
+  background: #193a28;
+}
+
+.settings-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.settings-message {
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border-radius: 7px;
+  font-size: 13px;
+}
+
+.settings-message.error {
+  background: #fff0f0;
+  color: #b42318;
+  border: 1px solid #f5caca;
+}
+
+.settings-message.success {
+  background: #edf7ef;
+  color: #216b37;
+  border: 1px solid #cce8d2;
+}
+
+.settings-loading {
+  color: #737d76;
+  font-size: 14px;
+}
+
+.settings-back-link {
+  display: inline-block;
+  margin-top: 24px;
+  color: #254b36;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.settings-back-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .platform-settings {
+    padding: 20px 16px;
+  }
+
+  .settings-section {
+    padding: 20px;
+  }
+
+  .settings-heading h1 {
+    font-size: 24px;
+  }
+}

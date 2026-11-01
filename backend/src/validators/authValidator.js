@@ -60,10 +60,19 @@ const resendVerificationSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
+const updatePlatformAdminProfileSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(3, "Name must be at least 3 characters")
+    .max(70, "Name must be at most 70 characters"),
+});
+
 export {
   restaurantSignupSchema,
   platformAdminSignupSchema,
   loginSchema,
   verifyEmailSchema,
   resendVerificationSchema,
+  updatePlatformAdminProfileSchema,
 };

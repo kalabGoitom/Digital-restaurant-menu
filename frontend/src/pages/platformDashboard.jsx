@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import {
   getPlatformDashboardStats,
   getRecentRestaurants,
+  getCurrentPlatformAdmin,
+  logoutPlatformAdmin,
 } from "../services/platformAdminApi";
 
 function PlatformDashboard() {
@@ -19,6 +21,24 @@ function PlatformDashboard() {
   const [restaurants, setRestaurants] = useState([]);
   const [restaurantsLoading, setRestaurantsLoading] = useState(true);
   const [restaurantsError, setRestaurantsError] = useState("");
+
+  const [admin, setAdmin] = useState(null);
+  const [adminLoading, setAdminLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const data = await getCurrentPlatformAdmin();
+        setAdmin(data);
+      } catch (error) {
+        console.error("Failed to fetch platform admin:", error);
+      } finally {
+        setAdminLoading(false);
+      }
+    };
+
+    fetchAdmin();
+  }, []);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -50,6 +70,26 @@ function PlatformDashboard() {
     fetchRestaurants();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await logoutPlatformAdmin();
+      navigate("/platform/login", { replace: true });
+    } catch (error) {
+      console.error("Platform admin logout failed:", error);
+    }
+  };
+
+  const getAdminInitials = (name) => {
+    if (!name) return "";
+
+    return name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part[0].toUpperCase())
+      .join("");
+  };
+
   return (
     <div className="dashboard">
       <aside className="sidebar">
@@ -67,7 +107,7 @@ function PlatformDashboard() {
           <a href="/platform/settings">Settings</a>
         </nav>
 
-        <button className="logout-button" type="button">
+        <button className="logout-button" type="button" onClick={handleLogout}>
           Log out
         </button>
       </aside>
@@ -79,7 +119,9 @@ function PlatformDashboard() {
             <p>Welcome back to NOVA.</p>
           </div>
 
-          <div className="admin-avatar">A</div>
+          <div className="admin-avatar">
+            {adminLoading ? "..." : getAdminInitials(admin?.name)}
+          </div>
         </header>
 
         <section className="stats-grid">

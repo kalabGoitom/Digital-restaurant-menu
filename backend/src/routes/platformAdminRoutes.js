@@ -15,11 +15,14 @@ import {
   reactivateRestaurant,
   getCurrentPlatformAdmin,
   getPlatformDashboardStats,
+  platformAdminLogout,
+  updatePlatformAdminProfile,
 } from "../controllers/platformAdminController.js";
 import protectPlatformAdmin from "../middlewares/platformAdminMiddleware.js";
 import {
   platformAdminSignupSchema,
   loginSchema,
+  updatePlatformAdminProfileSchema,
 } from "../validators/authValidator.js";
 import validateRequest from "../middlewares/validateRequest.js";
 import {
@@ -98,8 +101,17 @@ router.post(
   reactivateRestaurant,
 );
 
+router.patch(
+  "/me",
+  protectPlatformAdmin,
+  validateRequest(updatePlatformAdminProfileSchema),
+  updatePlatformAdminProfile,
+);
+
 router.get("/me", protectPlatformAdmin, getCurrentPlatformAdmin);
 
 router.get("/dashboard/stats", protectPlatformAdmin, getPlatformDashboardStats);
+
+router.post("/logout", platformAdminLogout);
 
 export default router;

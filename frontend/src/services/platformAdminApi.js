@@ -133,3 +133,52 @@ export const reactivateRestaurant = async (id) => {
 
   return data.restaurant;
 };
+
+export const logoutPlatformAdmin = async () => {
+  const response = await fetch(`${API_URL}/platform-admin/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to log out.");
+  }
+
+  return data;
+};
+
+export const updatePlatformAdminProfile = async (profileData) => {
+  const response = await fetch(`${API_URL}/platform-admin/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(profileData),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update profile.");
+  }
+
+  return data;
+};
+
+export const getCurrentPlatformAdmin = async () => {
+  const response = await fetch(`${API_URL}/platform-admin/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch platform admin.");
+  }
+
+  return data.admin;
+};
