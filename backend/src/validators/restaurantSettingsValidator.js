@@ -8,6 +8,7 @@ const restaurantSettingsSchema = z
   .object({
     name: z.string().trim().min(2).max(100).optional(),
     logoUrl: z.string().trim().url().nullable().optional(),
+    logoPublicId: z.string().trim().nullable().optional(),
     primaryColor: hexColorSchema.nullable().optional(),
     secondaryColor: hexColorSchema.nullable().optional(),
     accentColor: hexColorSchema.nullable().optional(),

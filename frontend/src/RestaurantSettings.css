@@ -86,14 +86,49 @@
   font-size: 12px;
 }
 
+.settings-logo-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .settings-logo-preview img {
   display: block;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   object-fit: contain;
   padding: 8px;
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
+}
+
+.settings-remove-logo {
+  padding: 9px 14px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.settings-remove-logo:hover {
+  background: #fee2e2;
+}
+
+.settings-remove-logo:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.settings-upload-status {
+  margin: 0;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .settings-color-input {
@@ -143,6 +178,11 @@
 
 .settings-save-button:hover {
   background: #1d4ed8;
+}
+
+.settings-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .settings-error {

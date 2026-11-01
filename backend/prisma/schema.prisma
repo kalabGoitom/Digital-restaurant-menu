@@ -90,6 +90,7 @@ model Restaurant {
   name    String
   slug    String  @unique
   logoUrl String?
+  logoPublicId String?
 
   primaryColor   String?
   secondaryColor String?

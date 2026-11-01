@@ -4,13 +4,18 @@ import {
   getRestaurantSettings,
   updateRestaurantSettings,
 } from "../services/restaurantSettingsApi";
+import { uploadImage } from "../services/menuApi.js";
+
 import "../RestaurantDashboard.css";
 import "../RestaurantSettings.css";
 
 function RestaurantSettings() {
   const [settings, setSettings] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
+  const [logoPreview, setLogoPreview] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,14 +42,68 @@ function RestaurantSettings() {
     }));
   };
 
+  const handleLogoChange = async (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setError("");
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Logo image must be 5 MB or smaller.");
+      event.target.value = "";
+      return;
+    }
+
+    const localPreview = URL.createObjectURL(file);
+    setLogoPreview(localPreview);
+    setIsUploading(true);
+
+    try {
+      const result = await uploadImage(file, "logo");
+
+      setSettings((current) => ({
+        ...current,
+        logoUrl: result.url,
+        logoPublicId: result.publicId,
+      }));
+    } catch (err) {
+      setLogoPreview("");
+      setError(err.message || "Failed to upload restaurant logo.");
+    } finally {
+      setIsUploading(false);
+      URL.revokeObjectURL(localPreview);
+      event.target.value = "";
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    setSettings((current) => ({
+      ...current,
+      logoUrl: null,
+      logoPublicId: null,
+    }));
+
+    setLogoPreview("");
+    setError("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
+    setIsSaving(true);
 
     try {
       const {
         name,
         logoUrl,
+        logoPublicId,
         primaryColor,
         secondaryColor,
         accentColor,
@@ -54,15 +113,20 @@ function RestaurantSettings() {
       const updatedRestaurant = await updateRestaurantSettings({
         name,
         logoUrl: logoUrl || null,
+        logoPublicId: logoPublicId || null,
         primaryColor: primaryColor || null,
         secondaryColor: secondaryColor || null,
         accentColor: accentColor || null,
         defaultLanguage,
       });
+
       setSettings(updatedRestaurant);
+      setLogoPreview("");
       alert("Restaurant settings saved successfully.");
     } catch (err) {
       setError(err.message || "Failed to save restaurant settings.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -123,28 +187,45 @@ function RestaurantSettings() {
         </div>
 
         <div className="settings-field">
-          <label htmlFor="restaurant-logo">Logo URL</label>
+          <label htmlFor="restaurant-logo">Restaurant logo</label>
+
           <input
             id="restaurant-logo"
-            name="logoUrl"
-            type="url"
-            value={settings.logoUrl || ""}
-            onChange={handleChange}
-            placeholder="https://example.com/logo.png"
+            type="file"
+            accept="image/*"
+            onChange={handleLogoChange}
+            disabled={isUploading || isSaving}
           />
-          <small>Leave empty if your restaurant has no logo.</small>
+
+          <small>
+            Choose an image for your restaurant logo. Maximum size: 5 MB.
+          </small>
         </div>
 
-        {settings.logoUrl && (
-          <div className="settings-logo-preview">
-            <img
-              src={settings.logoUrl}
-              alt="Restaurant logo preview"
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
-              }}
-            />
+        {(logoPreview || settings.logoUrl) && (
+          <div className="settings-logo-section">
+            <div className="settings-logo-preview">
+              <img
+                src={logoPreview || settings.logoUrl}
+                alt="Restaurant logo preview"
+              />
+            </div>
+
+            <button
+              type="button"
+              className="settings-remove-logo"
+              onClick={handleRemoveLogo}
+              disabled={isUploading || isSaving}
+            >
+              Remove logo
+            </button>
           </div>
+        )}
+
+        {isUploading && (
+          <p className="settings-upload-status">
+            Uploading logo to Cloudinary...
+          </p>
         )}
 
         <h2>Brand colors</h2>
@@ -156,6 +237,7 @@ function RestaurantSettings() {
         ].map(([name, label]) => (
           <div className="settings-field" key={name}>
             <label htmlFor={name}>{label}</label>
+
             <div className="settings-color-input">
               <input
                 id={name}
@@ -164,7 +246,9 @@ function RestaurantSettings() {
                 value={settings[name] || "#2563eb"}
                 onChange={handleChange}
               />
+
               <span>{settings[name] || "#2563eb"}</span>
+
               <button
                 type="button"
                 className="settings-clear-color"
@@ -185,6 +269,7 @@ function RestaurantSettings() {
 
         <div className="settings-field">
           <label htmlFor="default-language">Default menu language</label>
+
           <select
             id="default-language"
             name="defaultLanguage"
@@ -196,8 +281,12 @@ function RestaurantSettings() {
           </select>
         </div>
 
-        <button className="settings-save-button" type="submit">
-          Save Settings
+        <button
+          className="settings-save-button"
+          type="submit"
+          disabled={isUploading || isSaving}
+        >
+          {isSaving ? "Saving settings..." : "Save Settings"}
         </button>
       </form>
     </main>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../RestaurantDashboard.css";
+import "../RestaurantBranding.css";
 
 function RestaurantBranding({ restaurant }) {
   const [logoFailed, setLogoFailed] = useState(false);

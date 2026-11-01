@@ -1,4 +1,5 @@
 import { prisma } from "../config/db.js";
+import { deleteImage } from "../utilities/cloudinaryService.js";
 
 const getRestaurantSettings = async (req, res) => {
   try {
@@ -11,6 +12,7 @@ const getRestaurantSettings = async (req, res) => {
         name: true,
         slug: true,
         logoUrl: true,
+        logoPublicId: true,
         primaryColor: true,
         secondaryColor: true,
         accentColor: true,
@@ -41,6 +43,7 @@ const updateRestaurantSettings = async (req, res) => {
     const {
       name,
       logoUrl,
+      logoPublicId,
       primaryColor,
       secondaryColor,
       accentColor,
@@ -66,6 +69,7 @@ const updateRestaurantSettings = async (req, res) => {
       data: {
         ...(name !== undefined && { name }),
         ...(logoUrl !== undefined && { logoUrl }),
+        ...(logoPublicId !== undefined && { logoPublicId }),
         ...(primaryColor !== undefined && { primaryColor }),
         ...(secondaryColor !== undefined && { secondaryColor }),
         ...(accentColor !== undefined && { accentColor }),
@@ -76,12 +80,35 @@ const updateRestaurantSettings = async (req, res) => {
         name: true,
         slug: true,
         logoUrl: true,
+        logoPublicId: true,
         primaryColor: true,
         secondaryColor: true,
         accentColor: true,
         defaultLanguage: true,
       },
     });
+
+    // Delete the previous logo only after the database update succeeds.
+    const oldLogoPublicId = restaurant.logoPublicId;
+    const newLogoPublicId = updatedRestaurant.logoPublicId;
+
+    if (oldLogoPublicId && oldLogoPublicId !== newLogoPublicId) {
+      try {
+        const deletionResult = await deleteImage(oldLogoPublicId);
+
+        if (
+          deletionResult?.result !== "ok" &&
+          deletionResult?.result !== "not found"
+        ) {
+          console.error(
+            "Cloudinary did not confirm old logo deletion:",
+            deletionResult,
+          );
+        }
+      } catch (deleteError) {
+        console.error("Failed to delete old restaurant logo:", deleteError);
+      }
+    }
 
     return res.status(200).json({
       message: "Restaurant settings updated successfully.",

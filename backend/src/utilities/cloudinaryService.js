@@ -24,4 +24,14 @@ const uploadImage = (fileBuffer, folder) => {
   });
 };
 
+const deleteImage = async (publicId) => {
+  if (!publicId) return null;
+
+  return cloudinary.uploader.destroy(publicId, {
+    resource_type: "image",
+  });
+};
+
+export { deleteImage };
+
 export default uploadImage;
