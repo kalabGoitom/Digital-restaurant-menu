@@ -6,6 +6,7 @@ const initialFormData = {
   description: "",
   price: "",
   imageUrl: "",
+  imagePublicId: "",
   category: "",
 };
 
@@ -15,6 +16,7 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
     ...(initialData || {}),
     price: initialData?.price?.toString() || "",
     imageUrl: initialData?.imageUrl || "",
+    imagePublicId: initialData?.imagePublicId || "",
   }));
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -55,8 +57,8 @@ function MenuItemForm({ onSubmit, onCancel, initialData, submitting }) {
       setFormData((previousData) => ({
         ...previousData,
         imageUrl: result.url,
+        imagePublicId: result.publicId,
       }));
-
       setSelectedImage(null);
       setUploadSuccess("Image uploaded successfully.");
 

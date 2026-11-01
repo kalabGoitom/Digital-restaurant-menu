@@ -18,6 +18,7 @@ export const getMenuItems = async () => {
 
 // Create a new menu item
 export const createMenuItem = async (menuItem) => {
+  console.log("Menu item sent to API:", menuItem);
   const response = await fetch(`${API_URL}/admin/menu-items`, {
     method: "POST",
     headers: {

@@ -17,6 +17,8 @@ const menuSchema = z.object({
 
   imageUrl: z.string().url("Please provide a valid image URL"),
 
+  imagePublicId: z.string().nullable().optional(),
+
   category: z
     .string()
     .trim()
